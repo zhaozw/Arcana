@@ -3,6 +3,32 @@
 
     <string name="app_name">Arcana</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Debugging Strings -->
     <string name="hello_world">Hello world!</string>
+    <string name="image_holder">IMAGE GOES HERE!</string>
+    <string name="number_holder">42</string>
+    <string name="percent_holder" formatted="false">69%</string>
+
+    <!-- Generic Strings -->
+    <string name="on">On</string>
+    <string name="off">Off</string>
+
+    <!-- Main Activity -->
+    <string name="menu_duel">Duel</string>
+    <string name="menu_options">Options</string>
+    <string name="menu_about">About</string>
+    <string name="menu_quit">Quit</string>
+
+    <!-- Duel Activity -->
+    <string name="title_activity_duel">DuelActivity</string>
+
+    <!-- Options Activity -->
+    <string name="title_activity_options">Options</string>
+    <string name="options_sound">Sound:</string>
+
+    <!-- About Activity -->
+    <string name="title_activity_about">About Us</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</string>
 
 </resources>
