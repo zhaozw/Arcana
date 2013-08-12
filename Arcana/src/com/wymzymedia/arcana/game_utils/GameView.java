@@ -131,11 +131,29 @@ public abstract class GameView extends SurfaceView implements
 			// clear canvas
 			canvas.drawColor(Color.WHITE);
 
+			// render current display
+			if (currDisplay.equals("main")) {
+				renderMain(canvas);
+			} else {
+				// log unknown display type
+				Log.d(TAG, "Unknown display type: " + currDisplay);
+			}
+
 			// unlocking canvas and posting
 			getHolder().unlockCanvasAndPost(canvas);
 		} else {
 			Log.d(TAG, "Unable to lock canvas");
 		}
+	}
+
+	// Render main screen
+	private void renderMain(Canvas canvas) {
+		// render background
+
+		// render entities
+
+		// render user interface
+
 	}
 
 	// Render "paused" screen
