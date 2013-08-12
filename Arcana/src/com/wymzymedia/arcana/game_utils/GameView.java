@@ -147,7 +147,7 @@ public abstract class GameView extends SurfaceView implements
 	}
 
 	// Render main screen
-	private void renderMain(Canvas canvas) {
+	protected void renderMain(Canvas canvas) {
 		// render background
 
 		// render entities
