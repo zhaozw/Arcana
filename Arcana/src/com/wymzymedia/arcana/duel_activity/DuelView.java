@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
+import com.wymzymedia.arcana.duel_activity.systems.DuelRender;
 import com.wymzymedia.arcana.game_utils.GameThread;
 import com.wymzymedia.arcana.game_utils.GameView;
 

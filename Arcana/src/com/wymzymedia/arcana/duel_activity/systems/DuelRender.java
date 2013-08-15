@@ -1,4 +1,4 @@
-package com.wymzymedia.arcana.duel_activity;
+package com.wymzymedia.arcana.duel_activity.systems;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.wymzymedia.arcana.duel_activity.Defaults;
 import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameState;
 import com.wymzymedia.arcana.game_utils.GameSystem;
