@@ -39,8 +39,6 @@ public class DuelRender extends GameSystem {
 		viewCenterY = mainDisplay.exactCenterX();
 
 		// set required components
-		addReqComponent("IdentityC");
-		addReqComponent("PositionC");
 	}
 
 	// Process entities
@@ -82,12 +80,27 @@ public class DuelRender extends GameSystem {
 				mainDisplay.centerY(), paint);
 	}
 
-	// Render battle grid
+	// Render card grid
 	private void renderGrid(Canvas canvas) {
 		// initialize display variables
 		paint.setColor(Defaults.TEXT_COLOR);
 
 		// draw grid
-
+		int gridWidth = 3;
+		int gridHeight = 4;
+		float widthFactor = mainDisplay.width() / gridWidth;
+		float heightFactor = mainDisplay.height() / gridHeight;
+		for (int x = 0; x < gridWidth; x++) {
+			float[] lineStart = { widthFactor * x, 0 };
+			float[] lineStop = { widthFactor * x, mainDisplay.height() - 1 };
+			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
+					lineStop[1], paint);
+		}
+		for (int y = 0; y < gridHeight; y++) {
+			float[] lineStart = { 0, heightFactor * y };
+			float[] lineStop = { mainDisplay.width() - 1, heightFactor * y };
+			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
+					lineStop[1], paint);
+		}
 	}
 }
