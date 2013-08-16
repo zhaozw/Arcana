@@ -3,18 +3,28 @@ package com.wymzymedia.arcana.duel_activity.components;
 import java.util.Collections;
 import java.util.List;
 
+import android.util.Log;
+
 import com.wymzymedia.arcana.game_utils.GameComponent;
 
 public class DeckC extends GameComponent {
 	public static final String TAG = DeckC.class.getSimpleName();
 
 	// Class variables
+	private List<Integer> cards;
 	private boolean playerFlag;
 	private String type;
-	private List<Integer> cards;
 
 	// Constructor
-	public DeckC() {
+	public DeckC(List<Integer> c, boolean f, String t) {
+		cards = c;
+		playerFlag = f;
+		type = t;
+	}
+
+	// Return cards
+	public List<Integer> getCards() {
+		return cards;
 	}
 
 	// Return player flag
@@ -27,6 +37,11 @@ public class DeckC extends GameComponent {
 		return type;
 	}
 
+	// Set cards
+	public void setCards(List<Integer> c) {
+		cards = c;
+	}
+
 	// Set player flag
 	public void setPlayerFlag(boolean f) {
 		playerFlag = f;
@@ -34,7 +49,13 @@ public class DeckC extends GameComponent {
 
 	// Set deck type
 	public void setType(String t) {
-		type = t;
+		if (t.equals("deck") || t.equals("hand") || t.equals("active")
+				|| t.equals("discard")) {
+			type = t;
+		} else {
+			// log unknown deck type
+			Log.d(TAG, "Unknown deck type: " + t);
+		}
 	}
 
 	// Add card to bottom of deck
