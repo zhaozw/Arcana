@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
+import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameState;
 import com.wymzymedia.arcana.game_utils.GameSystem;
@@ -17,6 +19,10 @@ public class DuelRender extends GameSystem {
 	// Class variables
 	private final Context context;
 	private final Rect mainDisplay;
+	private final int cardCols;
+	private final int cardRows;
+	private final float gridWidth;
+	private final float gridHeight;
 	// TODO allow user to change dispFactor w/ pinch zoom
 	private final float dispFactor;
 	// TODO recenter view on player for each frame
@@ -35,11 +41,16 @@ public class DuelRender extends GameSystem {
 		// initialize variables
 		context = c;
 		mainDisplay = new Rect(0, 0, dispX, dispY);
+		cardCols = 3;
+		cardRows = 4;
+		gridWidth = mainDisplay.width() / cardCols;
+		gridHeight = mainDisplay.height() / cardRows;
 		dispFactor = 1;
 		viewCenterX = mainDisplay.exactCenterX();
 		viewCenterY = mainDisplay.exactCenterX();
 
 		// set required components
+		addReqComponent("DeckC");
 	}
 
 	// Process entities
@@ -52,33 +63,81 @@ public class DuelRender extends GameSystem {
 
 	// Execute logic on entity
 	protected void execSystem(GameEntity entity, Canvas canvas) {
-		// retrieve components
+		// TODO remove
+		Log.d(TAG, "===== HELLO!!! =====");
 
-		// initialize vars
+		// retrieve components
+		DeckC deck = (DeckC) entity.getComponent("DeckC");
 
 		// draw entity
+		int posOffset = (deck.getPlayerFlag() ? 1 : 0) * 3;
+		if (deck.getType().equals("deck")) {
+			renderCard(canvas, 3 + posOffset, 0, deck.getCards().size());
+		} else if (deck.getType().equals("hand")) {
 
+		} else if (deck.getType().equals("active")) {
+			for (int i = 0; i < deck.getCards().size(); i++) {
+				if (i == 0) {
+					renderCard(canvas, 4 + posOffset, 0, -1);
+				} else if (i < 4) {
+					renderCard(canvas, 0 + i - 1 + posOffset * 3, 0, -1);
+				} else {
+					// log excess active cards
+					Log.d(TAG, "Too many active cards");
+				}
+			}
+		} else if (deck.getType().equals("discard")) {
+			renderCard(canvas, 5 + posOffset, 99, deck.getCards().size());
+		} else {
+			// log unknown deck type
+			Log.d(TAG, "Unknown deck type: " + deck.getType());
+		}
 	}
 
 	// Render battle background
 	public void renderBackground(Canvas canvas) {
-		// render crosshair
-		renderCrosshair(canvas);
-
 		// render grid
 		renderGrid(canvas);
 	}
 
-	// Render cross hair
-	private void renderCrosshair(Canvas canvas) {
-		// initialize display variables
-		paint.setColor(Defaults.TEXT_COLOR);
+	// Render card at given position with optional card count
+	public void renderCard(Canvas canvas, int position, int image, int count) {
+		// initialize position variables
+		int offsetX = position % 3;
+		int offsetY = position / 3;
+		float posX = gridWidth / 2 + gridWidth * offsetX;
+		float posY = gridHeight / 2 + gridHeight * offsetY;
 
-		// draw cross hair
-		canvas.drawLine(mainDisplay.centerX(), 0, mainDisplay.centerX(),
-				mainDisplay.height(), paint);
-		canvas.drawLine(0, mainDisplay.centerY(), mainDisplay.width(),
-				mainDisplay.centerY(), paint);
+		// draw card
+		if (image == 0) {
+			// draw card outline
+			paint.setColor(Defaults.TEXT_COLOR);
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+		} else {
+			// draw card
+		}
+
+		// draw card count
+		if (count >= 0) {
+			// initialize display string variables
+			String countStr = String.valueOf(count);
+			// TODO calculate text size instead of fixed value
+			int textSize = 50;
+			paint.setTextSize(textSize);
+			paint.getTextBounds(countStr, 0, countStr.length(), rect);
+
+			// initialize position variables
+			float textX = posX + gridWidth / 2;
+			textX = textX - rect.width() - textSize / 2;
+			float textY = posY + gridHeight / 2;
+			textY = textY - textSize / 2;
+
+			// draw card count
+			paint.setColor(Defaults.TEXT_COLOR);
+			paint.setTextAlign(Paint.Align.LEFT);
+			canvas.drawText(countStr, textX, textY, paint);
+		}
 	}
 
 	// Render card grid
@@ -87,19 +146,15 @@ public class DuelRender extends GameSystem {
 		paint.setColor(Defaults.TEXT_COLOR);
 
 		// draw grid
-		int gridWidth = 3;
-		int gridHeight = 4;
-		float widthFactor = mainDisplay.width() / gridWidth;
-		float heightFactor = mainDisplay.height() / gridHeight;
-		for (int x = 0; x < gridWidth; x++) {
-			float[] lineStart = { widthFactor * x, 0 };
-			float[] lineStop = { widthFactor * x, mainDisplay.height() - 1 };
+		for (int x = 0; x < cardCols; x++) {
+			float[] lineStart = { gridWidth * x, 0 };
+			float[] lineStop = { gridWidth * x, mainDisplay.height() - 1 };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
-		for (int y = 0; y < gridHeight; y++) {
-			float[] lineStart = { 0, heightFactor * y };
-			float[] lineStop = { mainDisplay.width() - 1, heightFactor * y };
+		for (int y = 0; y < cardRows; y++) {
+			float[] lineStart = { 0, gridHeight * y };
+			float[] lineStop = { mainDisplay.width() - 1, gridHeight * y };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
