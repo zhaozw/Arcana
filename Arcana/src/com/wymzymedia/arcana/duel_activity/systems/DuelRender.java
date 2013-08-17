@@ -2,6 +2,7 @@ package com.wymzymedia.arcana.duel_activity.systems;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -87,7 +88,7 @@ public class DuelRender extends GameSystem {
 				}
 			}
 		} else if (deck.getType().equals("discard")) {
-			renderCard(canvas, 5 + posOffset, 99, deck.getCards().size());
+			renderCard(canvas, 5 + posOffset, 0, deck.getCards().size());
 		} else {
 			// log unknown deck type
 			Log.d(TAG, "Unknown deck type: " + deck.getType());
@@ -109,13 +110,24 @@ public class DuelRender extends GameSystem {
 		float posY = gridHeight / 2 + gridHeight * offsetY;
 
 		// draw card
+		int cardWidth = 150;
+		int cardHeight = 210;
 		if (image == 0) {
 			// draw card outline
-			paint.setColor(Defaults.TEXT_COLOR);
+			paint.setColor(Color.GRAY);
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
-
+			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
+					+ cardWidth / 2, posY + cardHeight / 2, paint);
 		} else {
 			// draw card
+			// TODO refine bitmap rotation and rendering
+			// Bitmap entityBitmap = BitmapFactory.decodeResource(
+			// context.getResources(), identity.getImageKey());
+			// Bitmap scaledBitmap = Bitmap.createScaledBitmap(entityBitmap,
+			// Math.round(size * 2), Math.round(size * 2), true);
+			// matrix.setRotate(position.getFacing(), size, size);
+			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
+			// canvas.drawBitmap(scaledBitmap, matrix, null);
 		}
 
 		// draw card count
