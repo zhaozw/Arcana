@@ -1,6 +1,7 @@
 package com.wymzymedia.arcana.duel_activity.systems;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -102,22 +103,47 @@ public class DuelRender extends GameSystem {
 	}
 
 	// Render card at given position with optional card count
-	public void renderCard(Canvas canvas, int position, int image, int count) {
-		// initialize position variables
+	public void renderCard(Canvas canvas, int position, int id, int count) {
+		// initialize card coordinate
 		int offsetX = position % 3;
 		int offsetY = position / 3;
 		float posX = gridWidth / 2 + gridWidth * offsetX;
 		float posY = gridHeight / 2 + gridHeight * offsetY;
 
+		// retrieve card image
+		Bitmap cardBitmap = null;
+		// TODO replace image flag with retrieved image or null
+		// Bitmap cardBitmap = BitmapFactory.decodeResource(
+		// context.getResources(), id);
+
 		// draw card
 		int cardWidth = 150;
 		int cardHeight = 210;
-		if (image == 0) {
+		if (cardBitmap == null) {
 			// draw card outline
 			paint.setColor(Color.GRAY);
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
 					+ cardWidth / 2, posY + cardHeight / 2, paint);
+
+			// draw card ID unless 0
+			if (id != 0) {
+				// initialize card ID string
+				String idStr = String.valueOf(id);
+				// TODO calculate text size instead of fixed value
+				int textSize = 50;
+				paint.setTextSize(textSize);
+				paint.getTextBounds(idStr, 0, idStr.length(), rect);
+
+				// initialize card ID coordinate
+				paint.setTextAlign(Paint.Align.CENTER);
+				float textX = posX;
+				float textY = posY + rect.height() / 2;
+
+				// draw card ID
+				paint.setColor(Defaults.TEXT_COLOR);
+				canvas.drawText(idStr, textX, textY, paint);
+			}
 		} else {
 			// draw card
 			// TODO refine bitmap rotation and rendering
@@ -132,14 +158,15 @@ public class DuelRender extends GameSystem {
 
 		// draw card count
 		if (count >= 0) {
-			// initialize display string variables
+			// initialize card count string
 			String countStr = String.valueOf(count);
 			// TODO calculate text size instead of fixed value
 			int textSize = 50;
 			paint.setTextSize(textSize);
 			paint.getTextBounds(countStr, 0, countStr.length(), rect);
 
-			// initialize position variables
+			// initialize card count coordinate
+			paint.setTextAlign(Paint.Align.LEFT);
 			float textX = posX + gridWidth / 2;
 			textX = textX - rect.width() - textSize / 2;
 			float textY = posY + gridHeight / 2;
@@ -147,7 +174,6 @@ public class DuelRender extends GameSystem {
 
 			// draw card count
 			paint.setColor(Defaults.TEXT_COLOR);
-			paint.setTextAlign(Paint.Align.LEFT);
 			canvas.drawText(countStr, textX, textY, paint);
 		}
 	}
