@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.util.Log;
-
 import com.wymzymedia.arcana.game_utils.GameComponent;
 
 public class DeckC extends GameComponent {
@@ -13,14 +11,15 @@ public class DeckC extends GameComponent {
 
 	// Class variables
 	private List<Integer> cards;
-	private boolean playerFlag;
-	private String type;
 
 	// Constructor
-	public DeckC(List<Integer> c, boolean f, String t) {
+	public DeckC(List<Integer> c) {
 		cards = new ArrayList<Integer>(c);
-		playerFlag = f;
-		type = t;
+	}
+
+	// Return card at given index
+	public int getCard(int i) {
+		return cards.get(i);
 	}
 
 	// Return cards
@@ -28,35 +27,9 @@ public class DeckC extends GameComponent {
 		return cards;
 	}
 
-	// Return player flag
-	public boolean getPlayerFlag() {
-		return playerFlag;
-	}
-
-	// Return deck type
-	public String getType() {
-		return type;
-	}
-
 	// Set cards
 	public void setCards(List<Integer> c) {
 		cards = c;
-	}
-
-	// Set player flag
-	public void setPlayerFlag(boolean f) {
-		playerFlag = f;
-	}
-
-	// Set deck type
-	public void setType(String t) {
-		if (t.equals("deck") || t.equals("hand") || t.equals("active")
-				|| t.equals("discard")) {
-			type = t;
-		} else {
-			// log unknown deck type
-			Log.d(TAG, "Unknown deck type: " + t);
-		}
 	}
 
 	// Add card to bottom of deck

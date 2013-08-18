@@ -7,10 +7,10 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
+import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameState;
 import com.wymzymedia.arcana.game_utils.GameSystem;
@@ -52,7 +52,11 @@ public class DuelRender extends GameSystem {
 		viewCenterY = mainDisplay.exactCenterX();
 
 		// set required components
-		addReqComponent("DeckC");
+		addReqComponent("VitalsC");
+		addReqComponent("NewDeckC");
+		addReqComponent("HandDeckC");
+		addReqComponent("ActiveDeckC");
+		addReqComponent("DiscardDeckC");
 	}
 
 	// Process entities
@@ -66,31 +70,34 @@ public class DuelRender extends GameSystem {
 	// Execute logic on entity
 	protected void execSystem(GameEntity entity, Canvas canvas) {
 		// retrieve components
-		DeckC deck = (DeckC) entity.getComponent("DeckC");
+		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		DeckC newDeck = (DeckC) entity.getComponent("NewDeckC");
+		DeckC handDeck = (DeckC) entity.getComponent("HandDeckC");
+		DeckC activeDeck = (DeckC) entity.getComponent("ActiveDeckC");
+		DeckC discardDeck = (DeckC) entity.getComponent("DiscardDeckC");
 
-		// draw entity
-		int posOffset = (deck.getPlayerFlag() ? 1 : 0) * 3;
-		if (deck.getType().equals("deck")) {
-			renderCard(canvas, 3 + posOffset, 0, deck.getCards().size());
-		} else if (deck.getType().equals("hand")) {
+		// initialize variables
+		int posOffset = (vitals.isHuman() ? 1 : 0) * 3;
 
-		} else if (deck.getType().equals("active")) {
-			for (int i = 0; i < deck.getCards().size(); i++) {
-				if (i == 0) {
-					renderCard(canvas, 4 + posOffset, 0, -1);
-				} else if (i < 4) {
-					renderCard(canvas, 0 + i - 1 + posOffset * 3, 0, -1);
-				} else {
-					// log excess active cards
-					Log.d(TAG, "Too many active cards");
-				}
-			}
-		} else if (deck.getType().equals("discard")) {
-			renderCard(canvas, 5 + posOffset, 0, deck.getCards().size());
-		} else {
-			// log unknown deck type
-			Log.d(TAG, "Unknown deck type: " + deck.getType());
+		// draw vitals
+
+		// draw selected card
+		renderCard(canvas, 4 + posOffset, vitals.getCard(), -1);
+
+		// draw new deck
+		renderCard(canvas, 3 + posOffset, 0, newDeck.getCards().size());
+
+		// draw discard deck
+		renderCard(canvas, 5 + posOffset, 0, discardDeck.getCards().size());
+
+		// draw active cards
+		for (int i = 0; i < activeDeck.getCards().size(); i++) {
+			renderCard(canvas, 0 + i - 1 + posOffset * 3,
+					activeDeck.getCard(i), -1);
 		}
+
+		// draw hand cards
+
 	}
 
 	// Render battle background
