@@ -79,25 +79,25 @@ public class DuelRender extends GameSystem {
 		// initialize variables
 		int posOffset = (vitals.isHuman() ? 1 : 0) * 3;
 
-		// draw vitals
+		// render vitals
 
-		// draw play card
+		// render play card
 		if (vitals.getCard() != 0) {
 			renderCard(canvas, 4 + posOffset, vitals.getCard(), -1);
 		}
 
-		// draw new deck
+		// render new deck
 		renderCard(canvas, 3 + posOffset, 0, newDeck.getCards().size());
 
-		// draw discard deck
+		// render discard deck
 		renderCard(canvas, 5 + posOffset, 0, discardDeck.getCards().size());
 
-		// draw active cards
+		// render active cards
 		for (int i = 0; i < activeDeck.getCards().size(); i++) {
 			renderCard(canvas, 0 + i + posOffset * 3, activeDeck.getCard(i), -1);
 		}
 
-		// draw hand cards
+		// render hand cards
 
 	}
 
@@ -121,17 +121,17 @@ public class DuelRender extends GameSystem {
 		// Bitmap cardBitmap = BitmapFactory.decodeResource(
 		// context.getResources(), id);
 
-		// draw card
+		// render card
 		int cardWidth = 150;
 		int cardHeight = 210;
 		if (cardBitmap == null) {
-			// draw card outline
+			// render card outline
 			paint.setColor(Color.GRAY);
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
 					+ cardWidth / 2, posY + cardHeight / 2, paint);
 
-			// draw card ID unless 0
+			// render card ID unless 0
 			if (id != 0) {
 				// initialize card ID string
 				String idStr = String.valueOf(id);
@@ -145,12 +145,12 @@ public class DuelRender extends GameSystem {
 				float textX = posX;
 				float textY = posY + rect.height() / 2;
 
-				// draw card ID
+				// render card ID
 				paint.setColor(Defaults.TEXT_COLOR);
 				canvas.drawText(idStr, textX, textY, paint);
 			}
 		} else {
-			// draw card
+			// render card
 			// TODO refine bitmap rotation and rendering
 			// Bitmap entityBitmap = BitmapFactory.decodeResource(
 			// context.getResources(), identity.getImageKey());
@@ -161,7 +161,7 @@ public class DuelRender extends GameSystem {
 			// canvas.drawBitmap(scaledBitmap, matrix, null);
 		}
 
-		// draw card count
+		// render card count
 		if (count >= 0) {
 			// initialize card count string
 			String countStr = String.valueOf(count);
@@ -177,7 +177,7 @@ public class DuelRender extends GameSystem {
 			float textY = posY + gridHeight / 2;
 			textY = textY - textSize / 2;
 
-			// draw card count
+			// render card count
 			paint.setColor(Defaults.TEXT_COLOR);
 			canvas.drawText(countStr, textX, textY, paint);
 		}
@@ -188,7 +188,7 @@ public class DuelRender extends GameSystem {
 		// initialize display variables
 		paint.setColor(Defaults.TEXT_COLOR);
 
-		// draw grid
+		// render grid
 		for (int x = 0; x < cardCols; x++) {
 			float[] lineStart = { gridWidth * x, 0 };
 			float[] lineStop = { gridWidth * x, mainDisplay.height() - 1 };
