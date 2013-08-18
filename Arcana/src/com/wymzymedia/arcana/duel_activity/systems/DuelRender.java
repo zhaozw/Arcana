@@ -92,8 +92,7 @@ public class DuelRender extends GameSystem {
 
 		// draw active cards
 		for (int i = 0; i < activeDeck.getCards().size(); i++) {
-			renderCard(canvas, 0 + i - 1 + posOffset * 3,
-					activeDeck.getCard(i), -1);
+			renderCard(canvas, 0 + i + posOffset * 3, activeDeck.getCard(i), -1);
 		}
 
 		// draw hand cards
