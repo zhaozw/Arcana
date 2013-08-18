@@ -65,9 +65,6 @@ public class DuelRender extends GameSystem {
 
 	// Execute logic on entity
 	protected void execSystem(GameEntity entity, Canvas canvas) {
-		// TODO remove
-		Log.d(TAG, "===== HELLO!!! =====");
-
 		// retrieve components
 		DeckC deck = (DeckC) entity.getComponent("DeckC");
 
