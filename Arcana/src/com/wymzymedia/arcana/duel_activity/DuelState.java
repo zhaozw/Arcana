@@ -15,9 +15,9 @@ public class DuelState extends GameState {
 	// Constructor
 	public DuelState() {
 		// initialize variables
-		human = new Player(true, 1, 1,
+		human = new Player(true, 5, 1,
 				Arrays.asList(new Integer[] { 1, 2, 3, 4 }));
-		computer = new Player(false, 1, 1, Arrays.asList(new Integer[] { 6, 7,
+		computer = new Player(false, 2, 2, Arrays.asList(new Integer[] { 6, 7,
 				8, 9 }));
 		addEntity(human);
 		addEntity(computer);

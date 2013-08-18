@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
@@ -34,6 +35,7 @@ public class DuelRender extends GameSystem {
 	// Shared helper variables
 	Paint paint = new Paint();
 	Rect rect = new Rect();
+	RectF rectF = new RectF();
 	Matrix matrix = new Matrix();
 
 	// Constructor
@@ -77,25 +79,31 @@ public class DuelRender extends GameSystem {
 		DeckC discardDeck = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// initialize variables
-		int posOffset = (vitals.isHuman() ? 1 : 0) * 3;
+		int posOffset = vitals.isHuman() ? 1 : 0;
 
-		// render vitals
+		// render player portrait
+		int picID = 0;
+		renderCard(canvas, 1 + posOffset * 9, picID, -1);
+
+		// render player vitals
+		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
+				* (1 + posOffset * 3), Color.GREEN);
+		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
+				* (1 + posOffset * 3), Color.BLUE);
 
 		// render play card
-		if (vitals.getCard() != 0) {
-			renderCard(canvas, 4 + posOffset, vitals.getCard(), -1);
+		// TODO remove true condition
+		if (vitals.getCard() != 0 || true) {
+			renderCard(canvas, 4 + posOffset * 3, vitals.getCard(), -1);
 		}
 
 		// render new deck
-		renderCard(canvas, 3 + posOffset, 0, newDeck.getCards().size());
+		renderCard(canvas, 0 + posOffset * 9, 0, newDeck.getCards().size());
 
 		// render discard deck
-		renderCard(canvas, 5 + posOffset, 0, discardDeck.getCards().size());
+		renderCard(canvas, 2 + posOffset * 9, 0, discardDeck.getCards().size());
 
 		// render active cards
-		for (int i = 0; i < activeDeck.getCards().size(); i++) {
-			renderCard(canvas, 0 + i + posOffset * 3, activeDeck.getCard(i), -1);
-		}
 
 		// render hand cards
 
@@ -105,6 +113,23 @@ public class DuelRender extends GameSystem {
 	public void renderBackground(Canvas canvas) {
 		// render grid
 		renderGrid(canvas);
+	}
+
+	// Render life or power bars
+	public void renderBars(Canvas canvas, int bars, float startX, float startY,
+			int color) {
+		float setHeight = gridHeight * 0.1f;
+		float barWidth = gridWidth * 0.15f;
+		float barHeight = setHeight * 0.9f;
+		float barX = startX;
+		float barY = startY - barHeight;
+		paint.setColor(color);
+		rectF.set(0, 0, barWidth, barHeight);
+		for (int i = 0; i < bars; i++) {
+			rectF.offsetTo(barX, barY);
+			canvas.drawRect(rectF, paint);
+			barY -= setHeight;
+		}
 	}
 
 	// Render card at given position with optional card count
