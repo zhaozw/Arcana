@@ -1,5 +1,6 @@
 package com.wymzymedia.arcana.duel_activity.components;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DeckC extends GameComponent {
 
 	// Constructor
 	public DeckC(List<Integer> c, boolean f, String t) {
-		cards = c;
+		cards = new ArrayList<Integer>(c);
 		playerFlag = f;
 		type = t;
 	}
