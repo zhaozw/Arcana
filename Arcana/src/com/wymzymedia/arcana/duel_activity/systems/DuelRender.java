@@ -81,8 +81,10 @@ public class DuelRender extends GameSystem {
 
 		// draw vitals
 
-		// draw selected card
-		renderCard(canvas, 4 + posOffset, vitals.getCard(), -1);
+		// draw play card
+		if (vitals.getCard() != 0) {
+			renderCard(canvas, 4 + posOffset, vitals.getCard(), -1);
+		}
 
 		// draw new deck
 		renderCard(canvas, 3 + posOffset, 0, newDeck.getCards().size());
