@@ -13,7 +13,7 @@ public class VitalsC extends GameComponent {
 
 	// Constructor
 	public VitalsC(boolean h, int l, int p) {
-		card = 0;
+		card = -1;
 		human = h;
 		life = l;
 		power = p;
