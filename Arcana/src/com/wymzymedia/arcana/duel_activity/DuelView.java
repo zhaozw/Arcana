@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
+import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
 import com.wymzymedia.arcana.duel_activity.systems.DuelRender;
 import com.wymzymedia.arcana.game_utils.GameThread;
 import com.wymzymedia.arcana.game_utils.GameView;
@@ -16,6 +17,7 @@ public class DuelView extends GameView {
 	// Class variables
 	private final boolean showMetrics = true;
 	private DuelRender renderSys;
+	private final DuelDraw drawSys;
 
 	// Constructor
 	public DuelView(Context context) {
@@ -29,6 +31,7 @@ public class DuelView extends GameView {
 
 		// initialize variables and systems
 		currDisplay = "main";
+		drawSys = new DuelDraw(gameState);
 	}
 
 	@Override
@@ -100,7 +103,6 @@ public class DuelView extends GameView {
 		Log.d(TAG, "Updating game");
 
 		// processing systems
-		// TODO remove
-		// system.process();
+		drawSys.process();
 	}
 }
