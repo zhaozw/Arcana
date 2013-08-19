@@ -92,8 +92,7 @@ public class DuelRender extends GameSystem {
 				* (1 + posOffset * 3), Color.BLUE);
 
 		// render play card
-		// TODO remove true condition
-		if (vitals.getCard() != 0 || true) {
+		if (vitals.getCard() >= 0) {
 			renderCard(canvas, 4 + posOffset * 3, vitals.getCard(), -1);
 		}
 
@@ -122,7 +121,7 @@ public class DuelRender extends GameSystem {
 		float barWidth = gridWidth * 0.15f;
 		float barHeight = setHeight * 0.9f;
 		float barX = startX;
-		float barY = startY - barHeight;
+		float barY = startY - (setHeight * 0.1f) - barHeight;
 		paint.setColor(color);
 		rectF.set(0, 0, barWidth, barHeight);
 		for (int i = 0; i < bars; i++) {
@@ -191,7 +190,7 @@ public class DuelRender extends GameSystem {
 			// initialize card count string
 			String countStr = String.valueOf(count);
 			// TODO calculate text size instead of fixed value
-			int textSize = 50;
+			int textSize = 35;
 			paint.setTextSize(textSize);
 			paint.getTextBounds(countStr, 0, countStr.length(), rect);
 
