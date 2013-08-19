@@ -37,6 +37,11 @@ public class DeckC extends GameComponent {
 		cards.add(n);
 	}
 
+	// Add list of cards to bottom of deck
+	public void addCards(List<Integer> c) {
+		cards.addAll(c);
+	}
+
 	// Remove and return card at index n
 	public int drawCard(int n) {
 		int card = cards.get(n - 1);
