@@ -1,5 +1,7 @@
 package com.wymzymedia.arcana.duel_activity.systems;
 
+import android.util.Log;
+
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -12,12 +14,14 @@ public class DuelDraw extends GameSystem {
 	// Constructor
 	public DuelDraw(GameState state) {
 		super(state);
-
 	}
 
 	// Execute logic on entity
 	@Override
 	protected void execSystem(GameEntity entity) {
+		// TODO remove
+		Log.d(TAG, "========== DRAWING CARD ==========");
+
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		DeckC newDeck = (DeckC) entity.getComponent("NewDeckC");
