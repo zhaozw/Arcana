@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.duel_activity.entities.Player;
 import com.wymzymedia.arcana.game_utils.GameState;
 
@@ -44,5 +45,18 @@ public class DuelState extends GameState {
 	// Set duel phase
 	public void setPhase(int n) {
 		phase = n;
+	}
+
+	// Update duel phase based on player phases
+	public void updatePhase() {
+		VitalsC humanVitals = (VitalsC) human.getComponent("VitalsC");
+		VitalsC compVitals = (VitalsC) computer.getComponent("VitalsC");
+
+		// set phase to the lowest phase
+		if (humanVitals.getPhase() < compVitals.getPhase()) {
+			setPhase(humanVitals.getPhase());
+		} else {
+			setPhase(compVitals.getPhase());
+		}
 	}
 }

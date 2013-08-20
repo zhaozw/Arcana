@@ -25,6 +25,9 @@ public class DuelPlay extends GameSystem {
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 
 		// process card effects
+
+		// progress player to next phase
+		vitals.setPhase(vitals.getPhase() + 1);
 	}
 
 }

@@ -121,5 +121,8 @@ public class DuelView extends GameView {
 		} else if (((DuelState) gameState).getPhase() == 4) {
 			discardSys.process();
 		}
+
+		// update game phase
+		((DuelState) gameState).updatePhase();
 	}
 }

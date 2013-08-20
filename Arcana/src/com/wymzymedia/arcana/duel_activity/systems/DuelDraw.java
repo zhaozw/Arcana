@@ -35,5 +35,8 @@ public class DuelDraw extends GameSystem {
 		if (drawNum > 0) {
 			handDeck.addCards(newDeck.drawTop(drawNum));
 		}
+
+		// progress player to next phase
+		vitals.setPhase(vitals.getPhase() + 1);
 	}
 }

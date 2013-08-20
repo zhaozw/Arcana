@@ -25,5 +25,8 @@ public class DuelDiscard extends GameSystem {
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 
 		// discard expired cards
+
+		// progress player to next phase
+		vitals.setPhase(1);
 	}
 }

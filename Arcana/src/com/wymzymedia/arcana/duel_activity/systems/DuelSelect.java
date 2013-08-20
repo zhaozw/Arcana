@@ -30,5 +30,8 @@ public class DuelSelect extends GameSystem {
 		} else {
 			// perform computer selection
 		}
+
+		// progress player to next phase
+		vitals.setPhase(vitals.getPhase() + 1);
 	}
 }

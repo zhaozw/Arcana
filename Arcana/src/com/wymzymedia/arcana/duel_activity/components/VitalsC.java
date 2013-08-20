@@ -8,6 +8,7 @@ public class VitalsC extends GameComponent {
 	// Class variables
 	private int card;
 	private boolean human;
+	private int phase;
 	private int life;
 	private int power;
 	private int drawNum;
@@ -16,6 +17,7 @@ public class VitalsC extends GameComponent {
 	public VitalsC(boolean h, int l, int p) {
 		card = -1;
 		human = h;
+		phase = 1;
 		life = l;
 		power = p;
 		drawNum = 1;
@@ -29,6 +31,11 @@ public class VitalsC extends GameComponent {
 	// Return human flag
 	public boolean isHuman() {
 		return human;
+	}
+
+	// Return player phase
+	public int getPhase() {
+		return phase;
 	}
 
 	// Return life
@@ -49,6 +56,11 @@ public class VitalsC extends GameComponent {
 	// Set selected card
 	public void setCard(int c) {
 		card = c;
+	}
+
+	// Set player phase
+	public void setPhase(int n) {
+		phase = n;
 	}
 
 	// Set human flag
