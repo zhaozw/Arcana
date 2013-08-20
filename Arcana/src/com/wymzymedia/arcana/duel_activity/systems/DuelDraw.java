@@ -32,6 +32,11 @@ public class DuelDraw extends GameSystem {
 		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
+		// abort if player phase does not match duel phase
+		if (vitals.getPhase() != 1) {
+			return;
+		}
+
 		// draw from new deck and add to hand deck
 		int drawNum = vitals.getDrawNum();
 		if (draw.getCards().size() < drawNum) {

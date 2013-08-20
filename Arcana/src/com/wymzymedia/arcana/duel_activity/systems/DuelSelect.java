@@ -35,6 +35,11 @@ public class DuelSelect extends GameSystem {
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
+		// abort if player phase does not match duel phase
+		if (vitals.getPhase() != 2) {
+			return;
+		}
+
 		// select card to play
 		// TODO verify human selection is valid
 		// if (vitals.isHuman()) {

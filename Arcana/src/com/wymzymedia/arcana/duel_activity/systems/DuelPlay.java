@@ -30,6 +30,11 @@ public class DuelPlay extends GameSystem {
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		DeckC active = (DeckC) entity.getComponent("ActiveDeckC");
 
+		// abort if player phase does not match duel phase
+		if (vitals.getPhase() != 3) {
+			return;
+		}
+
 		// apply card effects
 		// TODO may need to split play phase into calculate and apply phases
 
