@@ -42,10 +42,10 @@ public class DeckC extends GameComponent {
 		cards.addAll(c);
 	}
 
-	// Remove and return card at index n
-	public int drawCard(int n) {
-		int card = cards.get(n - 1);
-		cards.remove(n - 1);
+	// Remove and return card at index i
+	public int drawCard(int i) {
+		int card = cards.get(i);
+		cards.remove(i);
 		return card;
 	}
 
@@ -56,14 +56,14 @@ public class DeckC extends GameComponent {
 		return top;
 	}
 
-	// Reorder card from "old" position to "new" position
-	public void reorderCard(int oldP, int newP) {
-		int card = cards.get(oldP - 1);
-		cards.remove(oldP - 1);
-		if (oldP < newP) {
-			cards.add(newP - 1, card);
-		} else if (oldP > newP) {
-			cards.add(newP, card);
+	// Reorder card from "old" index to "new" index
+	public void reorderCard(int oldI, int newI) {
+		int card = cards.get(oldI - 1);
+		cards.remove(oldI - 1);
+		if (oldI < newI) {
+			cards.add(newI - 1, card);
+		} else if (oldI > newI) {
+			cards.add(newI, card);
 		}
 	}
 
