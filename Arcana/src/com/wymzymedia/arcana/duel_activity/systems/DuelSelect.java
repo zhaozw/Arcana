@@ -29,7 +29,7 @@ public class DuelSelect extends GameSystem {
 	@Override
 	protected void execSystem(GameEntity entity) {
 		// TODO remove
-		Log.d(TAG, "========== SELECTING CARD ==========");
+		Log.d(TAG, "========== SELECT PHASE ==========");
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");

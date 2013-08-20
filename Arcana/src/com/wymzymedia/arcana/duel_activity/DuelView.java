@@ -8,8 +8,9 @@ import android.view.SurfaceHolder;
 import com.wymzymedia.arcana.AppDefaults;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDiscard;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
-import com.wymzymedia.arcana.duel_activity.systems.DuelPlay;
+import com.wymzymedia.arcana.duel_activity.systems.DuelPrep;
 import com.wymzymedia.arcana.duel_activity.systems.DuelRender;
+import com.wymzymedia.arcana.duel_activity.systems.DuelResolve;
 import com.wymzymedia.arcana.duel_activity.systems.DuelSelect;
 import com.wymzymedia.arcana.game_utils.GameThread;
 import com.wymzymedia.arcana.game_utils.GameView;
@@ -22,7 +23,8 @@ public class DuelView extends GameView {
 	private DuelRender renderSys;
 	private final DuelDraw drawSys;
 	private final DuelSelect selectSys;
-	private final DuelPlay playSys;
+	private final DuelPrep prepSys;
+	private final DuelResolve resolveSys;
 	private final DuelDiscard discardSys;
 
 	// Constructor
@@ -39,7 +41,8 @@ public class DuelView extends GameView {
 		currDisplay = "main";
 		drawSys = new DuelDraw(gameState);
 		selectSys = new DuelSelect(gameState);
-		playSys = new DuelPlay(gameState);
+		prepSys = new DuelPrep(gameState);
+		resolveSys = new DuelResolve(gameState);
 		discardSys = new DuelDiscard(gameState);
 	}
 
@@ -117,8 +120,10 @@ public class DuelView extends GameView {
 		} else if (((DuelState) gameState).getPhase() == 2) {
 			selectSys.process();
 		} else if (((DuelState) gameState).getPhase() == 3) {
-			playSys.process();
+			prepSys.process();
 		} else if (((DuelState) gameState).getPhase() == 4) {
+			resolveSys.process();
+		} else if (((DuelState) gameState).getPhase() == 5) {
 			discardSys.process();
 		}
 

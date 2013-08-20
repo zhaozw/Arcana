@@ -8,11 +8,11 @@ import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameState;
 import com.wymzymedia.arcana.game_utils.GameSystem;
 
-public class DuelPlay extends GameSystem {
-	public static final String TAG = DuelPlay.class.getSimpleName();
+public class DuelPrep extends GameSystem {
+	public static final String TAG = DuelPrep.class.getSimpleName();
 
 	// Constructor
-	public DuelPlay(GameState state) {
+	public DuelPrep(GameState state) {
 		super(state);
 
 		// set required components
@@ -24,7 +24,7 @@ public class DuelPlay extends GameSystem {
 	@Override
 	protected void execSystem(GameEntity entity) {
 		// TODO remove
-		Log.d(TAG, "========== PLAYING CARD ==========");
+		Log.d(TAG, "========== PREP PHASE ==========");
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
@@ -35,8 +35,7 @@ public class DuelPlay extends GameSystem {
 			return;
 		}
 
-		// apply card effects
-		// TODO may need to split play phase into calculate and apply phases
+		// retrieve card data
 
 		// progress player to next phase
 		vitals.setPhase(vitals.getPhase() + 1);

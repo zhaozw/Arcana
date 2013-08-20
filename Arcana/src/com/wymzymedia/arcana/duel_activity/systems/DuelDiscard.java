@@ -24,14 +24,14 @@ public class DuelDiscard extends GameSystem {
 	@Override
 	protected void execSystem(GameEntity entity) {
 		// TODO remove
-		Log.d(TAG, "========== DISCARDING CARD ==========");
+		Log.d(TAG, "========== DISCARD PHASE ==========");
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// abort if player phase does not match duel phase
-		if (vitals.getPhase() != 4) {
+		if (vitals.getPhase() != 5) {
 			return;
 		}
 
