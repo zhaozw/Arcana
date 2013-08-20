@@ -13,6 +13,7 @@ public class DuelState extends GameState {
 	// Class variables
 	Player human;
 	Player computer;
+	int phase;
 
 	// Constructor
 	public DuelState() {
@@ -30,7 +31,18 @@ public class DuelState extends GameState {
 		computer = new Player(false, 2, 2, pokerDeck.subList(26, 52));
 		addEntity(human);
 		addEntity(computer);
+		phase = 1;
 
 		// draw first hand
+	}
+
+	// Return duel phase
+	public int getPhase() {
+		return phase;
+	}
+
+	// Set duel phase
+	public void setPhase(int n) {
+		phase = n;
 	}
 }
