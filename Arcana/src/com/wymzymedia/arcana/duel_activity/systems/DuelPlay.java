@@ -13,6 +13,9 @@ public class DuelPlay extends GameSystem {
 	// Constructor
 	public DuelPlay(GameState state) {
 		super(state);
+
+		// set required components
+		addReqComponent("VitalsC");
 	}
 
 	// Execute logic on entity
