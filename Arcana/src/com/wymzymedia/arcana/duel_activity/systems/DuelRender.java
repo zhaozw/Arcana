@@ -55,7 +55,7 @@ public class DuelRender extends GameSystem {
 
 		// set required components
 		addReqComponent("VitalsC");
-		addReqComponent("NewDeckC");
+		addReqComponent("DrawDeckC");
 		addReqComponent("HandDeckC");
 		addReqComponent("ActiveDeckC");
 		addReqComponent("DiscardDeckC");
@@ -73,16 +73,16 @@ public class DuelRender extends GameSystem {
 	protected void execSystem(GameEntity entity, Canvas canvas) {
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		DeckC newDeck = (DeckC) entity.getComponent("NewDeckC");
-		DeckC handDeck = (DeckC) entity.getComponent("HandDeckC");
-		DeckC activeDeck = (DeckC) entity.getComponent("ActiveDeckC");
-		DeckC discardDeck = (DeckC) entity.getComponent("DiscardDeckC");
+		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
+		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
+		DeckC active = (DeckC) entity.getComponent("ActiveDeckC");
+		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// initialize variables
 		int posOffset = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		int picID = 0;
+		int picID = -1;
 		renderCard(canvas, 1 + posOffset * 9, picID, -1);
 
 		// render player vitals
@@ -97,10 +97,10 @@ public class DuelRender extends GameSystem {
 		}
 
 		// render new deck
-		renderCard(canvas, 0 + posOffset * 9, 0, newDeck.getCards().size());
+		renderCard(canvas, 0 + posOffset * 9, -1, draw.getCards().size());
 
 		// render discard deck
-		renderCard(canvas, 2 + posOffset * 9, 0, discardDeck.getCards().size());
+		renderCard(canvas, 2 + posOffset * 9, -1, discard.getCards().size());
 
 		// render active cards
 
@@ -155,8 +155,8 @@ public class DuelRender extends GameSystem {
 			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
 					+ cardWidth / 2, posY + cardHeight / 2, paint);
 
-			// render card ID unless 0
-			if (id != 0) {
+			// render card ID unless negative
+			if (id >= 0) {
 				// initialize card ID string
 				String idStr = String.valueOf(id);
 				// TODO calculate text size instead of fixed value
