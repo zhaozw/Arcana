@@ -14,6 +14,11 @@ public class DuelDraw extends GameSystem {
 	// Constructor
 	public DuelDraw(GameState state) {
 		super(state);
+
+		// set required components
+		addReqComponent("VitalsC");
+		addReqComponent("DrawDeckC");
+		addReqComponent("HandDeckC");
 	}
 
 	// Execute logic on entity
@@ -24,16 +29,16 @@ public class DuelDraw extends GameSystem {
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		DeckC newDeck = (DeckC) entity.getComponent("NewDeckC");
-		DeckC handDeck = (DeckC) entity.getComponent("HandDeckC");
+		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
+		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
 		// draw from new deck and add to hand deck
 		int drawNum = vitals.getDrawNum();
-		if (newDeck.getCards().size() < drawNum) {
-			drawNum = newDeck.getCards().size();
+		if (draw.getCards().size() < drawNum) {
+			drawNum = draw.getCards().size();
 		}
 		if (drawNum > 0) {
-			handDeck.addCards(newDeck.drawTop(drawNum));
+			hand.addCards(draw.drawTop(drawNum));
 		}
 
 		// progress player to next phase
