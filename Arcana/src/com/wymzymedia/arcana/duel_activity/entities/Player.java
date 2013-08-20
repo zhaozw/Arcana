@@ -13,7 +13,7 @@ public class Player extends GameEntity {
 	// Constructor
 	public Player(boolean human, int life, int power, List<Integer> cards) {
 		addComponent("VitalsC", new VitalsC(human, life, power));
-		addComponent("NewDeckC", new DeckC(cards));
+		addComponent("DrawDeckC", new DeckC(cards));
 		addComponent("HandDeckC", new DeckC(new ArrayList<Integer>()));
 		addComponent("ActiveDeckC", new DeckC(new ArrayList<Integer>()));
 		addComponent("DiscardDeckC", new DeckC(new ArrayList<Integer>()));
