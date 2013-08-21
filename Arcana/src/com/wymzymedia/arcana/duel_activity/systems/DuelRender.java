@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
+import com.wymzymedia.arcana.duel_activity.components.CardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -55,6 +56,7 @@ public class DuelRender extends GameSystem {
 
 		// set required components
 		addReqComponent("VitalsC");
+		addReqComponent("PlayCardC");
 		addReqComponent("DrawDeckC");
 		addReqComponent("HandDeckC");
 		addReqComponent("DiscardDeckC");
@@ -72,6 +74,7 @@ public class DuelRender extends GameSystem {
 	protected void execSystem(GameEntity entity, Canvas canvas) {
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		CardC card = (CardC) entity.getComponent("PlayCardC");
 		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
@@ -90,8 +93,8 @@ public class DuelRender extends GameSystem {
 				* (1 + posOffset * 3), Color.BLUE);
 
 		// render play card
-		if (vitals.getCard() >= 0) {
-			renderCard(canvas, 4 + posOffset * 3, vitals.getCard(), -1);
+		if (card.getID() >= 0) {
+			renderCard(canvas, 4 + posOffset * 3, card.getID(), -1);
 		}
 
 		// render new deck

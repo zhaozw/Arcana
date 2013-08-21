@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.wymzymedia.arcana.duel_activity.components.CardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -33,6 +34,7 @@ public class DuelSelect extends GameSystem {
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		CardC card = (CardC) entity.getComponent("PlayCardC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
 		// abort if player phase does not match duel phase
@@ -48,7 +50,7 @@ public class DuelSelect extends GameSystem {
 		// perform computer selection
 		// TODO implement AI strategy instead of random select
 		if (hand.getCards().size() > 0) {
-			vitals.setCard(hand.drawCard(rng.nextInt(hand.getCards().size())));
+			card.setID(hand.drawCard(rng.nextInt(hand.getCards().size())));
 		}
 		// }
 

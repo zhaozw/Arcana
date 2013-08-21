@@ -6,7 +6,6 @@ public class VitalsC extends GameComponent {
 	public static final String TAG = VitalsC.class.getSimpleName();
 
 	// Class variables
-	private int card;
 	private boolean human;
 	private int phase;
 	private int life;
@@ -15,17 +14,11 @@ public class VitalsC extends GameComponent {
 
 	// Constructor
 	public VitalsC(boolean h, int l, int p) {
-		card = -1;
 		human = h;
 		phase = 1;
 		life = l;
 		power = p;
 		drawNum = 1;
-	}
-
-	// Return selected card
-	public int getCard() {
-		return card;
 	}
 
 	// Return human flag
@@ -51,11 +44,6 @@ public class VitalsC extends GameComponent {
 	// Return number of cards to draw
 	public int getDrawNum() {
 		return drawNum;
-	}
-
-	// Set selected card
-	public void setCard(int c) {
-		card = c;
 	}
 
 	// Set player phase
