@@ -31,15 +31,11 @@ public class DuelDiscard extends GameSystem {
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// abort if player phase does not match duel phase
-		if (vitals.getPhase() != 5) {
+		if (vitals.getPhase() != 4) {
 			return;
 		}
 
-		// discard expired cards
-		if (vitals.getCard() >= 0) {
-			discard.addCard(vitals.getCard());
-			vitals.setCard(-1);
-		}
+		// discard expired active cards
 
 		// progress player to next phase
 		vitals.setPhase(1);

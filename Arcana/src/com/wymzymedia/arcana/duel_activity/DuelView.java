@@ -116,9 +116,9 @@ public class DuelView extends GameView {
 			drawSys.process();
 		} else if (((DuelState) gameState).getPhase() == 2) {
 			selectSys.process();
-		} else if (((DuelState) gameState).getPhase() == 4) {
+		} else if (((DuelState) gameState).getPhase() == 3) {
 			resolveSys.process();
-		} else if (((DuelState) gameState).getPhase() == 5) {
+		} else if (((DuelState) gameState).getPhase() == 4) {
 			discardSys.process();
 		}
 
