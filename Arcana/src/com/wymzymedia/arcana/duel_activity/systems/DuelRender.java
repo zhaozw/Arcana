@@ -57,7 +57,6 @@ public class DuelRender extends GameSystem {
 		addReqComponent("VitalsC");
 		addReqComponent("DrawDeckC");
 		addReqComponent("HandDeckC");
-		addReqComponent("ActiveDeckC");
 		addReqComponent("DiscardDeckC");
 	}
 
@@ -75,7 +74,6 @@ public class DuelRender extends GameSystem {
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
-		DeckC active = (DeckC) entity.getComponent("ActiveDeckC");
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// initialize variables
@@ -101,8 +99,6 @@ public class DuelRender extends GameSystem {
 
 		// render discard deck
 		renderCard(canvas, 2 + posOffset * 9, -1, discard.getCards().size());
-
-		// render active cards
 
 		// render hand cards
 

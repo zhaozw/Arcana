@@ -15,7 +15,6 @@ public class Player extends GameEntity {
 		addComponent("VitalsC", new VitalsC(human, life, power));
 		addComponent("DrawDeckC", new DeckC(cards));
 		addComponent("HandDeckC", new DeckC(new ArrayList<Integer>()));
-		addComponent("ActiveDeckC", new DeckC(new ArrayList<Integer>()));
 		addComponent("DiscardDeckC", new DeckC(new ArrayList<Integer>()));
 	}
 }
