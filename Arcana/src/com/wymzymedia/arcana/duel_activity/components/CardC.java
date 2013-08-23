@@ -11,7 +11,7 @@ public class CardC extends GameComponent {
 
 	// Constructor
 	public CardC(int n) {
-		setID(n);
+		loadCard(n);
 	}
 
 	// Return card id
@@ -27,17 +27,23 @@ public class CardC extends GameComponent {
 	// Set card id
 	public void setID(int n) {
 		id = n;
-		if (id >= 0) {
-			// load card data
-			duration = 0;
-		} else {
-			// clear card data
-			duration = 0;
-		}
 	}
 
 	// Set card duration
 	public void setDuration(int n) {
 		duration = n;
+	}
+
+	// Load card data
+	// note: overridden by subclasses to handle db and extra attribs
+	public void loadCard(int n) {
+		setID(n);
+		if (n >= 0) {
+			// set values
+			duration = 0;
+		} else {
+			// clear values
+			duration = 0;
+		}
 	}
 }
