@@ -6,10 +6,9 @@ public class PokerCardC extends CardC {
 	// Class variables
 	private int suit;
 	private int value;
-	private final String[] suitMap = new String[] { "Clubs", "Diamonds",
-			"Hearts", "Spades" };
-	private final String[] valueMap = new String[] { "Ace", "2", "3", "4", "5",
-			"6", "7", "8", "9", "10", "Jack", "Queen", "King" };
+	private final String[] suitMap = new String[] { "C", "D", "H", "S" };
+	private final String[] valueMap = new String[] { "A", "2", "3", "4", "5",
+			"6", "7", "8", "9", "10", "J", "Q", "K" };
 
 	// Constructor
 	public PokerCardC(int n) {
@@ -30,7 +29,11 @@ public class PokerCardC extends CardC {
 	// Return name of card
 	@Override
 	public String getName() {
-		return valueMap[value] + " of " + suitMap[suit];
+		if (getID() >= 0) {
+			return valueMap[value] + " of " + suitMap[suit];
+		} else {
+			return "";
+		}
 	}
 
 	// Load card data
