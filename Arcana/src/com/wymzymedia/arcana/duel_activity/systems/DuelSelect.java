@@ -50,7 +50,7 @@ public class DuelSelect extends GameSystem {
 		// perform computer selection
 		// TODO implement AI strategy instead of random select
 		if (hand.getCards().size() > 0) {
-			card.setID(hand.drawCard(rng.nextInt(hand.getCards().size())));
+			card.loadCard(hand.drawCard(rng.nextInt(hand.getCards().size())));
 		}
 		// }
 

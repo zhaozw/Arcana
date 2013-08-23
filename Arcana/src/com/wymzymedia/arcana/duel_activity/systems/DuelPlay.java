@@ -43,7 +43,7 @@ public class DuelPlay extends GameSystem {
 		// discard played card
 		if (card.getDuration() <= 0) {
 			discard.addCard(card.getID());
-			card.setID(-1);
+			card.loadCard(-1);
 		}
 
 		// progress player to next phase
