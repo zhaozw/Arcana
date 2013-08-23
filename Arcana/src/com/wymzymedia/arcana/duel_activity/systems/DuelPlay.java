@@ -41,7 +41,7 @@ public class DuelPlay extends GameSystem {
 		// apply card effects
 
 		// discard played card
-		if (card.getID() >= 0) {
+		if (card.getDuration() <= 0) {
 			discard.addCard(card.getID());
 			card.setID(-1);
 		}

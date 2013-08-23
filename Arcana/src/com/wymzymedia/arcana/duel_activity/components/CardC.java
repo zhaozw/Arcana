@@ -7,10 +7,11 @@ public class CardC extends GameComponent {
 
 	// Class variables
 	private int id;
+	private int duration;
 
 	// Constructor
 	public CardC(int n) {
-		id = n;
+		setID(n);
 	}
 
 	// Return card id
@@ -18,13 +19,25 @@ public class CardC extends GameComponent {
 		return id;
 	}
 
+	// Return card duration
+	public int getDuration() {
+		return duration;
+	}
+
 	// Set card id
 	public void setID(int n) {
 		id = n;
 		if (id >= 0) {
-			// TODO load card data
+			// load card data
+			duration = 0;
 		} else {
-			// TODO clear card ddata
+			// clear card data
+			duration = 0;
 		}
+	}
+
+	// Set card duration
+	public void setDuration(int n) {
+		duration = n;
 	}
 }
