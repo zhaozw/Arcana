@@ -24,6 +24,12 @@ public class CardC extends GameComponent {
 		return duration;
 	}
 
+	// Return name of card
+	// note: override in subclass to return readable name
+	public String getName() {
+		return String.valueOf(id);
+	}
+
 	// Set card id
 	public void setID(int n) {
 		id = n;
@@ -35,7 +41,7 @@ public class CardC extends GameComponent {
 	}
 
 	// Load card data
-	// note: overridden by subclasses to handle db and extra attribs
+	// note: override in subclass to handle db implementation and extra attribs
 	public void loadCard(int n) {
 		setID(n);
 		if (n >= 0) {
