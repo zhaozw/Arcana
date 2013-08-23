@@ -42,19 +42,30 @@ public class DuelSelect extends GameSystem {
 			return;
 		}
 
-		// select card to play
-		// TODO verify human selection is valid
-		// if (vitals.isHuman()) {
-		// // verify human selection is valid
-		// } else {
-		// perform computer selection
+		// select computer card to play
+		// TODO uncomment isHuman() after card select interface implemented
+		// if (!vitals.isHuman()) {
 		// TODO implement AI strategy instead of random select
 		if (hand.getCards().size() > 0) {
 			card.loadCard(hand.drawCard(rng.nextInt(hand.getCards().size())));
 		}
 		// }
 
-		// progress player to next phase
-		vitals.setPhase(vitals.getPhase() + 1);
+		// check if card selected
+		if (card.getID() >= 0) {
+			// verify card requirements
+			// TODO implement verification method
+			boolean cardValid = true;
+			if (cardValid) {
+				// load card data into effects
+
+				// progress player to next phase
+				vitals.setPhase(vitals.getPhase() + 1);
+			} else {
+				// return card to hand
+				hand.addCard(card.getID());
+				card.loadCard(-1);
+			}
+		}
 	}
 }
