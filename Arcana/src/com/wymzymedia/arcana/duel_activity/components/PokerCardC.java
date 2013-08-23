@@ -27,8 +27,9 @@ public class PokerCardC extends CardC {
 		return value;
 	}
 
-	// Return card string
-	public String getCardStr() {
+	// Return name of card
+	@Override
+	public String getName() {
 		return valueMap[value] + " of " + suitMap[suit];
 	}
 
