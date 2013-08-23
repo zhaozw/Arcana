@@ -83,8 +83,7 @@ public class DuelRender extends GameSystem {
 		int posOffset = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		int picID = -1;
-		renderCard(canvas, 1 + posOffset * 9, picID, -1);
+		renderCard(canvas, 1 + posOffset * 9, null, -1);
 
 		// render player vitals
 		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
@@ -94,14 +93,14 @@ public class DuelRender extends GameSystem {
 
 		// render play card
 		if (card.getID() >= 0) {
-			renderCard(canvas, 4 + posOffset * 3, card.getID(), -1);
+			renderCard(canvas, 4 + posOffset * 3, card, -1);
 		}
 
 		// render new deck
-		renderCard(canvas, 0 + posOffset * 9, -1, draw.getCards().size());
+		renderCard(canvas, 0 + posOffset * 9, null, draw.getCards().size());
 
 		// render discard deck
-		renderCard(canvas, 2 + posOffset * 9, -1, discard.getCards().size());
+		renderCard(canvas, 2 + posOffset * 9, null, discard.getCards().size());
 
 		// render hand cards
 
@@ -131,7 +130,7 @@ public class DuelRender extends GameSystem {
 	}
 
 	// Render card at given position with optional card count
-	public void renderCard(Canvas canvas, int position, int id, int count) {
+	public void renderCard(Canvas canvas, int position, CardC card, int count) {
 		// initialize card coordinate
 		int offsetX = position % 3;
 		int offsetY = position / 3;
@@ -140,39 +139,14 @@ public class DuelRender extends GameSystem {
 
 		// retrieve card image
 		Bitmap cardBitmap = null;
-		// TODO replace image flag with retrieved image or null
+		// TODO retrieve image from resources
 		// Bitmap cardBitmap = BitmapFactory.decodeResource(
-		// context.getResources(), id);
+		// context.getResources(), card.getID());
 
 		// render card
 		int cardWidth = 150;
 		int cardHeight = 210;
-		if (cardBitmap == null) {
-			// render card outline
-			paint.setColor(Color.GRAY);
-			paint.setStyle(Paint.Style.FILL_AND_STROKE);
-			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
-					+ cardWidth / 2, posY + cardHeight / 2, paint);
-
-			// render card ID unless negative
-			if (id >= 0) {
-				// initialize card ID string
-				String idStr = String.valueOf(id);
-				// TODO calculate text size instead of fixed value
-				int textSize = 50;
-				paint.setTextSize(textSize);
-				paint.getTextBounds(idStr, 0, idStr.length(), rect);
-
-				// initialize card ID coordinate
-				paint.setTextAlign(Paint.Align.CENTER);
-				float textX = posX;
-				float textY = posY + rect.height() / 2;
-
-				// render card ID
-				paint.setColor(Defaults.TEXT_COLOR);
-				canvas.drawText(idStr, textX, textY, paint);
-			}
-		} else {
+		if (cardBitmap != null) {
 			// render card
 			// TODO refine bitmap rotation and rendering
 			// Bitmap entityBitmap = BitmapFactory.decodeResource(
@@ -182,6 +156,31 @@ public class DuelRender extends GameSystem {
 			// matrix.setRotate(position.getFacing(), size, size);
 			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
 			// canvas.drawBitmap(scaledBitmap, matrix, null);
+		} else {
+			// render card shape
+			paint.setColor(Color.GRAY);
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
+					+ cardWidth / 2, posY + cardHeight / 2, paint);
+
+			// render card name
+			if (card != null) {
+				// initialize name string
+				String nameStr = card.getName();
+				// TODO calculate text size instead of fixed value
+				int textSize = 50;
+				paint.setTextSize(textSize);
+				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
+
+				// initialize text coordinate
+				paint.setTextAlign(Paint.Align.CENTER);
+				float textX = posX;
+				float textY = posY + rect.height() / 2;
+
+				// render card name
+				paint.setColor(Defaults.TEXT_COLOR);
+				canvas.drawText(nameStr, textX, textY, paint);
+			}
 		}
 
 		// render card count
