@@ -57,7 +57,7 @@ public class DuelSelect extends GameSystem {
 			// TODO implement verification method
 			boolean cardValid = true;
 			if (cardValid) {
-				// load card data into effects
+				// add card effects to modifiers
 
 				// progress player to next phase
 				vitals.setPhase(vitals.getPhase() + 1);

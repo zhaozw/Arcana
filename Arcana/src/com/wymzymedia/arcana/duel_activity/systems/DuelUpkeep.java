@@ -32,6 +32,9 @@ public class DuelUpkeep extends GameSystem {
 			return;
 		}
 
+		// check card phase
+
+		// check card duration
 		// discard expired active cards
 
 		// progress player to next phase
