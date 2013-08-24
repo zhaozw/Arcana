@@ -19,20 +19,20 @@ public class DuelState extends GameState {
 	// Constructor
 	public DuelState() {
 		// initialize player decks
-		// TODO remove poker deck implementation
-		List<Integer> pokerDeck = new ArrayList<Integer>(52);
-		for (int i = 0; i < 52; i++) {
-			pokerDeck.add(i);
-		}
-		Collections.shuffle(pokerDeck);
+		List<Integer> playerDeck = new ArrayList<Integer>(1);
+		playerDeck.add(1);
+		playerDeck.add(2);
+		playerDeck.add(3);
+		List<Integer> computerDeck = new ArrayList<Integer>(playerDeck);
 
-		// initialize variables
-		// TODO remove poker deck implementation
-		human = new Player(true, 5, 1, pokerDeck.subList(0, 26));
-		computer = new Player(false, 2, 2, pokerDeck.subList(26, 52));
+		// initialize players
+		Collections.shuffle(playerDeck);
+		human = new Player(true, 5, 1, playerDeck);
+		Collections.shuffle(computerDeck);
+		computer = new Player(false, 2, 2, computerDeck);
 		addEntity(human);
 		addEntity(computer);
-		phase = 1;
+		updatePhase();
 
 		// draw first hand
 	}

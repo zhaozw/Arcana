@@ -11,7 +11,6 @@ public class ModifiersC extends GameComponent {
 	// Constructor
 	public ModifiersC() {
 		drawNum = 1;
-
 	}
 
 	// Return number of cards to draw
