@@ -38,10 +38,7 @@ public class DuelPlay extends GameSystem {
 			return;
 		}
 
-		// check card phase
-		if (card.getPhase().equals("play")) {
-			// apply card effects
-		}
+		// apply card effects
 
 		// check card duration
 		if (card.getDuration() == 0) {
