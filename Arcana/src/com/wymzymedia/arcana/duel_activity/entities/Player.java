@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
+import com.wymzymedia.arcana.duel_activity.components.ModifiersC;
 import com.wymzymedia.arcana.duel_activity.components.PokerCardC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -14,6 +15,7 @@ public class Player extends GameEntity {
 	// Constructor
 	public Player(boolean human, int life, int power, List<Integer> cards) {
 		addComponent("VitalsC", new VitalsC(human, life, power));
+		addComponent("ModifiersC", new ModifiersC());
 		// TODO replace PokerCardC with ArcanaCardC
 		addComponent("PlayCardC", new PokerCardC(-1));
 		addComponent("DrawDeckC", new DeckC(cards));
