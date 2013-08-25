@@ -56,8 +56,9 @@ public class DuelSelect extends GameSystem {
 			// verify card requirements
 			if (checkReqs(vitals, card.getReqStr())) {
 				// apply card costs
+				applyCosts(vitals, card.getCostStr());
 
-				// add card effects to modifiers
+				// apply card modifiers
 
 				// progress player to next phase
 				vitals.setPhase(vitals.getPhase() + 1);
@@ -84,14 +85,25 @@ public class DuelSelect extends GameSystem {
 	public boolean checkReq(VitalsC vitals, String req) {
 		String[] elems = req.split(":");
 		if (elems[0].equals("power")) {
-			if (!true) {
+			if (vitals.getPower() < Integer.valueOf(elems[1])) {
 				return false;
 			}
 		} else if (elems[0].equals("life")) {
-			if (!true) {
+			if (vitals.getPower() < Integer.valueOf(elems[1])) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	// Apply card costs
+	public void applyCosts(VitalsC vitals, String costStr) {
+		String[] costs = costStr.split(";");
+		for (String cost : costs) {
+			String[] elems = cost.split(":");
+			if (elems[0].equals("power")) {
+				vitals.setPower(vitals.getPower() + Integer.valueOf(elems[1]));
+			}
+		}
 	}
 }

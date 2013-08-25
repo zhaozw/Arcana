@@ -6,6 +6,7 @@ public class ArcanaCardC extends CardC {
 	// Class variables
 	private String name;
 	private String reqStr;
+	private String costStr;
 
 	// Constructor
 	public ArcanaCardC(int n) {
@@ -17,9 +18,19 @@ public class ArcanaCardC extends CardC {
 		return reqStr;
 	}
 
+	// Return cost string
+	public String getCostStr() {
+		return costStr;
+	}
+
 	// Set req string
 	public void setReqStr(String r) {
 		reqStr = r;
+	}
+
+	// Set cost string
+	public void setCostStr(String c) {
+		costStr = c;
 	}
 
 	// Return name of card
@@ -39,19 +50,24 @@ public class ArcanaCardC extends CardC {
 			case 1:
 				name = "Zap";
 				reqStr = "power:1;life:1";
+				costStr = "power:-1";
 				break;
 			case 2:
 				name = "Heal";
 				reqStr = "power:1;life:2";
+				costStr = "power:-1";
 				break;
 			case 3:
 				name = "Shield";
 				reqStr = "power:1;life:3";
+				costStr = "power:-1";
 				break;
 			}
 		} else {
 			// clear values
 			name = null;
+			reqStr = null;
+			costStr = null;
 		}
 	}
 }
