@@ -27,9 +27,9 @@ public class DuelState extends GameState {
 
 		// initialize players
 		Collections.shuffle(playerDeck);
-		human = new Player(true, 5, 1, playerDeck);
+		human = new Player(true, 10, 10, playerDeck);
 		Collections.shuffle(computerDeck);
-		computer = new Player(false, 2, 2, computerDeck);
+		computer = new Player(false, 10, 10, computerDeck);
 		addEntity(human);
 		addEntity(computer);
 		updatePhase();
