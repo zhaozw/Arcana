@@ -7,6 +7,7 @@ public class ArcanaCardC extends CardC {
 	private String name;
 	private String reqStr;
 	private String costStr;
+	private String effectStr;
 
 	// Constructor
 	public ArcanaCardC(int n) {
@@ -23,6 +24,11 @@ public class ArcanaCardC extends CardC {
 		return costStr;
 	}
 
+	// Return effect string
+	public String getEffectStr() {
+		return effectStr;
+	}
+
 	// Set req string
 	public void setReqStr(String r) {
 		reqStr = r;
@@ -31,6 +37,11 @@ public class ArcanaCardC extends CardC {
 	// Set cost string
 	public void setCostStr(String c) {
 		costStr = c;
+	}
+
+	// Set effect string
+	public void setEffectStr(String e) {
+		effectStr = e;
 	}
 
 	// Return name of card
@@ -51,16 +62,19 @@ public class ArcanaCardC extends CardC {
 				name = "Zap";
 				reqStr = "power:1";
 				costStr = "power:-1";
+				effectStr = "damage:1";
 				break;
 			case 2:
 				name = "Heal";
 				reqStr = "power:2";
 				costStr = "power:-2";
+				effectStr = "life:1";
 				break;
 			case 3:
 				name = "Shield";
 				reqStr = "power:3";
 				costStr = "power:-3";
+				effectStr = "shield:1";
 				break;
 			}
 		} else {
