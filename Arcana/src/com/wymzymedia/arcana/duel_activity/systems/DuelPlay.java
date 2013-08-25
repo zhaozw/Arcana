@@ -39,6 +39,7 @@ public class DuelPlay extends GameSystem {
 		}
 
 		// apply card effects
+		applyEffects(vitals, card.getEffectStr());
 
 		// check card duration
 		if (card.getDuration() == 0) {
@@ -51,5 +52,17 @@ public class DuelPlay extends GameSystem {
 
 		// progress player to next phase
 		vitals.setPhase(vitals.getPhase() + 1);
+	}
+
+	// Apply card effects
+	public void applyEffects(VitalsC vitals, String effectStr) {
+		String[] effects = effectStr.split(";");
+		for (String effect : effects) {
+			String[] elems = effect.split(":");
+			if (elems[0].equals("damage")) {
+			} else if (elems[0].equals("life")) {
+				vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
+			}
+		}
 	}
 }
