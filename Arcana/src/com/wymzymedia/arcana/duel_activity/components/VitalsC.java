@@ -10,6 +10,7 @@ public class VitalsC extends GameComponent {
 	private int phase;
 	private int life;
 	private int power;
+	private int drawNum;
 
 	// Constructor
 	public VitalsC(boolean h, int l, int p) {
@@ -17,6 +18,7 @@ public class VitalsC extends GameComponent {
 		phase = 1;
 		life = l;
 		power = p;
+		drawNum = 1;
 	}
 
 	// Return human flag
@@ -39,6 +41,11 @@ public class VitalsC extends GameComponent {
 		return power;
 	}
 
+	// Return number of cards to draw
+	public int getDrawNum() {
+		return drawNum;
+	}
+
 	// Set player phase
 	public void setPhase(int n) {
 		phase = n;
@@ -57,5 +64,10 @@ public class VitalsC extends GameComponent {
 	// Set power
 	public void setPower(int p) {
 		power = p;
+	}
+
+	// Set number of cards to draw
+	public void setDrawNum(int n) {
+		drawNum = n;
 	}
 }

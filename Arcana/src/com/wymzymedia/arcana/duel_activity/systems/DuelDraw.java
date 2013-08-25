@@ -3,7 +3,6 @@ package com.wymzymedia.arcana.duel_activity.systems;
 import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
-import com.wymzymedia.arcana.duel_activity.components.ModifiersC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameState;
@@ -30,7 +29,6 @@ public class DuelDraw extends GameSystem {
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		ModifiersC mods = (ModifiersC) entity.getComponent("ModifiersC");
 		DeckC draw = (DeckC) entity.getComponent("DrawDeckC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
@@ -40,7 +38,7 @@ public class DuelDraw extends GameSystem {
 		}
 
 		// draw from draw deck and add to hand deck
-		int drawNum = mods.getDrawNum();
+		int drawNum = vitals.getDrawNum();
 		if (draw.getCards().size() < drawNum) {
 			drawNum = draw.getCards().size();
 		}
