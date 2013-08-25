@@ -7,41 +7,74 @@ public class ArcanaCardC extends CardC {
 	private String name;
 	private String reqStr;
 	private String costStr;
+	private String boostStr;
 	private String effectStr;
+	private String upkeepStr;
+	private String discardStr;
 
 	// Constructor
 	public ArcanaCardC(int n) {
 		super(n);
 	}
 
-	// Return req string
+	// Return requirement string of status needed to play card
 	public String getReqStr() {
 		return reqStr;
 	}
 
-	// Return cost string
+	// Return cost string of changes to make when activating card
 	public String getCostStr() {
 		return costStr;
 	}
 
-	// Return effect string
+	// Return boost string of changes to make during select phase
+	public String getBoostStr() {
+		return boostStr;
+	}
+
+	// Return effect string of changes to make during play phase
 	public String getEffectStr() {
 		return effectStr;
 	}
 
-	// Set req string
-	public void setReqStr(String r) {
-		reqStr = r;
+	// Return upkeep string of changes to make during upkeep phase
+	public String getUpkeepStr() {
+		return upkeepStr;
+	}
+
+	// Return discard string of changes to make when discarding card
+	public String getDiscardStr() {
+		return discardStr;
+	}
+
+	// Set requirements string
+	public void setReqStr(String s) {
+		reqStr = s;
 	}
 
 	// Set cost string
-	public void setCostStr(String c) {
-		costStr = c;
+	public void setCostStr(String s) {
+		costStr = s;
+	}
+
+	// Set boost string
+	public void setBoostStr(String s) {
+		boostStr = s;
 	}
 
 	// Set effect string
-	public void setEffectStr(String e) {
-		effectStr = e;
+	public void setEffectStr(String s) {
+		effectStr = s;
+	}
+
+	// Set upkeep string
+	public void setUpkeepStr(String s) {
+		upkeepStr = s;
+	}
+
+	// Set discard string
+	public void setDiscardStr(String s) {
+		discardStr = s;
 	}
 
 	// Return name of card
@@ -54,8 +87,17 @@ public class ArcanaCardC extends CardC {
 	@Override
 	public void loadCard(int n) {
 		setID(n);
+
+		// clear values
+		reqStr = null;
+		costStr = null;
+		boostStr = null;
+		effectStr = null;
+		upkeepStr = null;
+		discardStr = null;
+
+		// set values
 		if (n >= 0) {
-			// set values
 			// TODO implement DB interface
 			switch (n) {
 			case 1:
@@ -77,11 +119,6 @@ public class ArcanaCardC extends CardC {
 				effectStr = "shield:1";
 				break;
 			}
-		} else {
-			// clear values
-			name = null;
-			reqStr = null;
-			costStr = null;
 		}
 	}
 }
