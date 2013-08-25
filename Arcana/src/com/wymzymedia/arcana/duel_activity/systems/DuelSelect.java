@@ -74,23 +74,15 @@ public class DuelSelect extends GameSystem {
 	public boolean checkReqs(VitalsC vitals, String reqStr) {
 		String[] reqs = reqStr.split(";");
 		for (String req : reqs) {
-			if (!checkReq(vitals, req)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	// Verify individual req
-	public boolean checkReq(VitalsC vitals, String req) {
-		String[] elems = req.split(":");
-		if (elems[0].equals("power")) {
-			if (vitals.getPower() < Integer.valueOf(elems[1])) {
-				return false;
-			}
-		} else if (elems[0].equals("life")) {
-			if (vitals.getPower() < Integer.valueOf(elems[1])) {
-				return false;
+			String[] elems = req.split(":");
+			if (elems[0].equals("power")) {
+				if (vitals.getPower() < Integer.valueOf(elems[1])) {
+					return false;
+				}
+			} else if (elems[0].equals("life")) {
+				if (vitals.getPower() < Integer.valueOf(elems[1])) {
+					return false;
+				}
 			}
 		}
 		return true;
