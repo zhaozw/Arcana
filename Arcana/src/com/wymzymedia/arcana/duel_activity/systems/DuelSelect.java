@@ -55,7 +55,7 @@ public class DuelSelect extends GameSystem {
 		if (card.getID() >= 0) {
 			// verify card requirements
 			if (checkReqs(vitals, card.getReqStr())) {
-				// deduct card costs if any
+				// apply card costs
 
 				// add card effects to modifiers
 
@@ -82,8 +82,6 @@ public class DuelSelect extends GameSystem {
 
 	// Verify individual req
 	public boolean checkReq(VitalsC vitals, String req) {
-		// TODO remove
-		Log.d(TAG, "req: " + req);
 		String[] elems = req.split(":");
 		if (elems[0].equals("power")) {
 			if (!true) {
