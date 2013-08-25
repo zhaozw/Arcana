@@ -19,11 +19,14 @@ public class DuelState extends GameState {
 	// Constructor
 	public DuelState() {
 		// initialize player decks
-		List<Integer> playerDeck = new ArrayList<Integer>(1);
+		List<Integer> playerDeck = new ArrayList<Integer>();
 		playerDeck.add(1);
-		playerDeck.add(2);
-		playerDeck.add(3);
-		List<Integer> computerDeck = new ArrayList<Integer>(playerDeck);
+		playerDeck.add(1);
+		playerDeck.add(1);
+		List<Integer> computerDeck = new ArrayList<Integer>();
+		computerDeck.add(2);
+		computerDeck.add(2);
+		computerDeck.add(3);
 
 		// initialize players
 		Collections.shuffle(playerDeck);

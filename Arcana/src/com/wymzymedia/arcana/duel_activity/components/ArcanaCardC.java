@@ -49,18 +49,18 @@ public class ArcanaCardC extends CardC {
 			switch (n) {
 			case 1:
 				name = "Zap";
-				reqStr = "power:1;life:1";
+				reqStr = "power:1";
 				costStr = "power:-1";
 				break;
 			case 2:
 				name = "Heal";
-				reqStr = "power:1;life:2";
-				costStr = "power:-1";
+				reqStr = "power:2";
+				costStr = "power:-2";
 				break;
 			case 3:
 				name = "Shield";
-				reqStr = "power:1;life:3";
-				costStr = "power:-1";
+				reqStr = "power:3";
+				costStr = "power:-3";
 				break;
 			}
 		} else {

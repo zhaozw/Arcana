@@ -79,10 +79,6 @@ public class DuelSelect extends GameSystem {
 				if (vitals.getPower() < Integer.valueOf(elems[1])) {
 					return false;
 				}
-			} else if (elems[0].equals("life")) {
-				if (vitals.getPower() < Integer.valueOf(elems[1])) {
-					return false;
-				}
 			}
 		}
 		return true;
