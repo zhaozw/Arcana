@@ -4,7 +4,7 @@ import java.util.Random;
 
 import android.util.Log;
 
-import com.wymzymedia.arcana.duel_activity.components.CardC;
+import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -34,7 +34,7 @@ public class DuelSelect extends GameSystem {
 
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		CardC card = (CardC) entity.getComponent("PlayCardC");
+		ArcanaCardC card = (ArcanaCardC) entity.getComponent("PlayCardC");
 		DeckC hand = (DeckC) entity.getComponent("HandDeckC");
 
 		// abort if player phase does not match duel phase
@@ -54,9 +54,9 @@ public class DuelSelect extends GameSystem {
 		// check if card selected
 		if (card.getID() >= 0) {
 			// verify card requirements
-			// TODO implement verification method
-			boolean cardValid = true;
-			if (cardValid) {
+			if (checkReqs(vitals, card.getReqStr())) {
+				// deduct card costs if any
+
 				// add card effects to modifiers
 
 				// progress player to next phase
@@ -67,5 +67,33 @@ public class DuelSelect extends GameSystem {
 				card.loadCard(-1);
 			}
 		}
+	}
+
+	// Check card reqs
+	public boolean checkReqs(VitalsC vitals, String reqStr) {
+		String[] reqs = reqStr.split(";");
+		for (String req : reqs) {
+			if (!checkReq(vitals, req)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// Verify individual req
+	public boolean checkReq(VitalsC vitals, String req) {
+		// TODO remove
+		Log.d(TAG, "req: " + req);
+		String[] elems = req.split(":");
+		if (elems[0].equals("power")) {
+			if (!true) {
+				return false;
+			}
+		} else if (elems[0].equals("life")) {
+			if (!true) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
