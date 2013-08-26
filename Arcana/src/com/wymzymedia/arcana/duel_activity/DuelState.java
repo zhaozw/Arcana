@@ -26,8 +26,8 @@ public class DuelState extends GameState {
 		playerDeck.add(1);
 		List<Integer> computerDeck = new ArrayList<Integer>();
 		computerDeck.add(2);
-		computerDeck.add(2);
-		computerDeck.add(3);
+		computerDeck.add(1);
+		computerDeck.add(1);
 
 		// initialize players
 		Collections.shuffle(playerDeck);
@@ -69,13 +69,15 @@ public class DuelState extends GameState {
 		// retrieve components
 		VitalsC vitals = (VitalsC) player.getComponent("VitalsC");
 
-		// parse and verify requirements
-		String[] reqs = reqStr.split(";");
-		for (String req : reqs) {
-			String[] elems = req.split(":");
-			if (elems[0].equals("power")) {
-				if (vitals.getPower() < Integer.valueOf(elems[1])) {
-					return false;
+		// parse and verify requirements if any
+		if (reqStr != null) {
+			String[] reqs = reqStr.split(";");
+			for (String req : reqs) {
+				String[] elems = req.split(":");
+				if (elems[0].equals("power")) {
+					if (vitals.getPower() < Integer.valueOf(elems[1])) {
+						return false;
+					}
 				}
 			}
 		}
@@ -87,12 +89,15 @@ public class DuelState extends GameState {
 		// retrieve components
 		VitalsC vitals = (VitalsC) player.getComponent("VitalsC");
 
-		// parse and apply changes
-		String[] changes = changeStr.split(";");
-		for (String change : changes) {
-			String[] elems = change.split(":");
-			if (elems[0].equals("power")) {
-				vitals.setPower(vitals.getPower() + Integer.valueOf(elems[1]));
+		// parse and apply changes if any
+		if (changeStr != null) {
+			String[] changes = changeStr.split(";");
+			for (String change : changes) {
+				String[] elems = change.split(":");
+				if (elems[0].equals("power")) {
+					vitals.setPower(vitals.getPower()
+							+ Integer.valueOf(elems[1]));
+				}
 			}
 		}
 	}
