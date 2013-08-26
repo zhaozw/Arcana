@@ -22,11 +22,7 @@ public class DuelState extends GameState {
 		// initialize player decks
 		List<Integer> playerDeck = new ArrayList<Integer>();
 		playerDeck.add(1);
-		playerDeck.add(1);
-		playerDeck.add(1);
 		List<Integer> computerDeck = new ArrayList<Integer>();
-		computerDeck.add(3);
-		computerDeck.add(1);
 		computerDeck.add(1);
 
 		// initialize players
@@ -103,11 +99,11 @@ public class DuelState extends GameState {
 					// apply damage
 					targetVitals.setLife(targetVitals.getLife()
 							- Integer.valueOf(elems[1]));
+				} else if (elems[0].equals("life")) {
+					vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
 				} else if (elems[0].equals("power")) {
 					vitals.setPower(vitals.getPower()
 							+ Integer.valueOf(elems[1]));
-				} else if (elems[0].equals("life")) {
-					vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
 				}
 			}
 		}
