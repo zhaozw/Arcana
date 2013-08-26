@@ -46,6 +46,9 @@ public class DuelUpkeep extends GameSystem {
 			// apply card upkeep
 			((DuelState) getState()).applyChanges(entity, card.getUpkeepStr());
 
+			// decrement duration
+			card.setDuration(card.getDuration() - 1);
+
 			// check duration
 			if (card.getDuration() == 0) {
 				// apply card discard

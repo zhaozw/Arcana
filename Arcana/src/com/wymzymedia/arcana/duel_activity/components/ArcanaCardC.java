@@ -123,7 +123,7 @@ public class ArcanaCardC extends CardC {
 				name = "HOT";
 				reqStr = "power:1";
 				costStr = "power:1";
-				upkeepStr = "life:1;duration:-1";
+				upkeepStr = "life:1";
 				break;
 			}
 		}
