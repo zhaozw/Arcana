@@ -3,6 +3,7 @@ package com.wymzymedia.arcana.duel_activity.systems;
 import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.DuelState;
+import com.wymzymedia.arcana.duel_activity.components.ActiveDeckC;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
@@ -32,6 +33,7 @@ public class DuelPlay extends GameSystem {
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
 		ArcanaCardC card = (ArcanaCardC) entity.getComponent("PlayCardC");
+		ActiveDeckC active = (ActiveDeckC) entity.getComponent("ActiveDeckC");
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// abort if player phase does not match duel phase
@@ -49,6 +51,8 @@ public class DuelPlay extends GameSystem {
 			card.loadCard(-1);
 		} else {
 			// move card to active deck
+			active.addCard(card.getID());
+			card.loadCard(-1);
 		}
 
 		// progress player to next phase

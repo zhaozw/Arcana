@@ -3,6 +3,7 @@ package com.wymzymedia.arcana.duel_activity.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wymzymedia.arcana.duel_activity.components.ActiveDeckC;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
@@ -17,6 +18,7 @@ public class Player extends GameEntity {
 		addComponent("PlayCardC", new ArcanaCardC(-1));
 		addComponent("DrawDeckC", new DeckC(cards));
 		addComponent("HandDeckC", new DeckC(new ArrayList<Integer>()));
+		addComponent("ActiveDeckC", new ActiveDeckC(new ArrayList<Integer>()));
 		addComponent("DiscardDeckC", new DeckC(new ArrayList<Integer>()));
 	}
 }
