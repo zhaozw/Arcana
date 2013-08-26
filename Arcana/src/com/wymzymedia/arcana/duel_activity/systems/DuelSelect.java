@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.wymzymedia.arcana.duel_activity.DuelState;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
@@ -54,9 +55,9 @@ public class DuelSelect extends GameSystem {
 		// check if card selected
 		if (card.getID() >= 0) {
 			// verify card requirements
-			if (checkReqs(vitals, card.getReqStr())) {
+			if (DuelState.checkReqs(entity, card.getReqStr())) {
 				// apply card costs
-				applyCosts(vitals, card.getCostStr());
+				DuelState.applyChanges(entity, card.getCostStr());
 
 				// apply card modifiers
 
@@ -66,31 +67,6 @@ public class DuelSelect extends GameSystem {
 				// return card to hand
 				hand.addCard(card.getID());
 				card.loadCard(-1);
-			}
-		}
-	}
-
-	// Check card reqs
-	public boolean checkReqs(VitalsC vitals, String reqStr) {
-		String[] reqs = reqStr.split(";");
-		for (String req : reqs) {
-			String[] elems = req.split(":");
-			if (elems[0].equals("power")) {
-				if (vitals.getPower() < Integer.valueOf(elems[1])) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	// Apply card costs
-	public void applyCosts(VitalsC vitals, String costStr) {
-		String[] costs = costStr.split(";");
-		for (String cost : costs) {
-			String[] elems = cost.split(":");
-			if (elems[0].equals("power")) {
-				vitals.setPower(vitals.getPower() + Integer.valueOf(elems[1]));
 			}
 		}
 	}

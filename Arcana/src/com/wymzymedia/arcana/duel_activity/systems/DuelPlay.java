@@ -2,6 +2,7 @@ package com.wymzymedia.arcana.duel_activity.systems;
 
 import android.util.Log;
 
+import com.wymzymedia.arcana.duel_activity.DuelState;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
@@ -39,7 +40,7 @@ public class DuelPlay extends GameSystem {
 		}
 
 		// apply card effects
-		applyEffects(vitals, card.getEffectStr());
+		DuelState.applyChanges(entity, card.getEffectStr());
 
 		// check card duration
 		if (card.getDuration() == 0) {
@@ -52,17 +53,5 @@ public class DuelPlay extends GameSystem {
 
 		// progress player to next phase
 		vitals.setPhase(vitals.getPhase() + 1);
-	}
-
-	// Apply card effects
-	public void applyEffects(VitalsC vitals, String effectStr) {
-		String[] effects = effectStr.split(";");
-		for (String effect : effects) {
-			String[] elems = effect.split(":");
-			if (elems[0].equals("damage")) {
-			} else if (elems[0].equals("life")) {
-				vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
-			}
-		}
 	}
 }
