@@ -25,7 +25,7 @@ public class DuelState extends GameState {
 		playerDeck.add(1);
 		playerDeck.add(1);
 		List<Integer> computerDeck = new ArrayList<Integer>();
-		computerDeck.add(2);
+		computerDeck.add(3);
 		computerDeck.add(1);
 		computerDeck.add(1);
 
@@ -85,7 +85,7 @@ public class DuelState extends GameState {
 	}
 
 	// Apply card changes to player
-	public static final void applyChanges(GameEntity player, String changeStr) {
+	public final void applyChanges(GameEntity player, String changeStr) {
 		// retrieve components
 		VitalsC vitals = (VitalsC) player.getComponent("VitalsC");
 
@@ -94,9 +94,20 @@ public class DuelState extends GameState {
 			String[] changes = changeStr.split(";");
 			for (String change : changes) {
 				String[] elems = change.split(":");
-				if (elems[0].equals("power")) {
+				if (elems[0].equals("damage")) {
+					// initialize target
+					Player target = vitals.isHuman() ? computer : human;
+					VitalsC targetVitals = (VitalsC) target
+							.getComponent("VitalsC");
+
+					// apply damage
+					targetVitals.setLife(targetVitals.getLife()
+							- Integer.valueOf(elems[1]));
+				} else if (elems[0].equals("power")) {
 					vitals.setPower(vitals.getPower()
 							+ Integer.valueOf(elems[1]));
+				} else if (elems[0].equals("life")) {
+					vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
 				}
 			}
 		}

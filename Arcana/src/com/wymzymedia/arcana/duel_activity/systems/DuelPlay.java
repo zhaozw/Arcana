@@ -40,7 +40,7 @@ public class DuelPlay extends GameSystem {
 		}
 
 		// apply card effects
-		DuelState.applyChanges(entity, card.getEffectStr());
+		((DuelState) getState()).applyChanges(entity, card.getEffectStr());
 
 		// check card duration
 		if (card.getDuration() == 0) {

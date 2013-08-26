@@ -117,6 +117,7 @@ public class ArcanaCardC extends CardC {
 				reqStr = "power:3";
 				costStr = "power:-3";
 				modStr = "shield:1";
+				discardStr = "shield:-1";
 				break;
 			}
 		}

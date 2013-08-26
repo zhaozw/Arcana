@@ -57,10 +57,11 @@ public class DuelSelect extends GameSystem {
 			// verify card requirements
 			if (DuelState.checkReqs(entity, card.getReqStr())) {
 				// apply card costs
-				DuelState.applyChanges(entity, card.getCostStr());
+				((DuelState) getState())
+						.applyChanges(entity, card.getCostStr());
 
 				// apply card modifiers
-				DuelState.applyChanges(entity, card.getModStr());
+				((DuelState) getState()).applyChanges(entity, card.getModStr());
 
 				// progress player to next phase
 				vitals.setPhase(vitals.getPhase() + 1);
