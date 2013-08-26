@@ -7,7 +7,7 @@ public class ArcanaCardC extends CardC {
 	private String name;
 	private String reqStr;
 	private String costStr;
-	private String boostStr;
+	private String modStr;
 	private String effectStr;
 	private String upkeepStr;
 	private String discardStr;
@@ -27,9 +27,9 @@ public class ArcanaCardC extends CardC {
 		return costStr;
 	}
 
-	// Return boost string of changes to make during select phase
-	public String getBoostStr() {
-		return boostStr;
+	// Return mod string of changes to make during select phase
+	public String getModStr() {
+		return modStr;
 	}
 
 	// Return effect string of changes to make during play phase
@@ -57,9 +57,9 @@ public class ArcanaCardC extends CardC {
 		costStr = s;
 	}
 
-	// Set boost string
-	public void setBoostStr(String s) {
-		boostStr = s;
+	// Set mod string
+	public void setModStr(String s) {
+		modStr = s;
 	}
 
 	// Set effect string
@@ -91,7 +91,7 @@ public class ArcanaCardC extends CardC {
 		// clear values
 		reqStr = null;
 		costStr = null;
-		boostStr = null;
+		modStr = null;
 		effectStr = null;
 		upkeepStr = null;
 		discardStr = null;
@@ -116,7 +116,7 @@ public class ArcanaCardC extends CardC {
 				name = "Shield";
 				reqStr = "power:3";
 				costStr = "power:-3";
-				effectStr = "shield:1";
+				modStr = "shield:1";
 				break;
 			}
 		}

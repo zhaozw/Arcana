@@ -60,6 +60,7 @@ public class DuelSelect extends GameSystem {
 				DuelState.applyChanges(entity, card.getCostStr());
 
 				// apply card modifiers
+				DuelState.applyChanges(entity, card.getModStr());
 
 				// progress player to next phase
 				vitals.setPhase(vitals.getPhase() + 1);
