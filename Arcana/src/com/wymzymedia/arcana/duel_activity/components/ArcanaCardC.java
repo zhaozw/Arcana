@@ -4,7 +4,6 @@ public class ArcanaCardC extends CardC {
 	public static final String TAG = ArcanaCardC.class.getSimpleName();
 
 	// Class variables
-	private String name;
 	private String reqStr;
 	private String costStr;
 	private String modStr;
@@ -77,18 +76,13 @@ public class ArcanaCardC extends CardC {
 		discardStr = s;
 	}
 
-	// Return name of card
-	@Override
-	public String getName() {
-		return name;
-	}
-
 	// Load card data
 	@Override
 	public void loadCard(int n) {
-		setID(n);
-
 		// clear values
+		setID(-1);
+		setDuration(0);
+		setName(String.valueOf(-1));
 		reqStr = null;
 		costStr = null;
 		modStr = null;
@@ -98,29 +92,30 @@ public class ArcanaCardC extends CardC {
 
 		// set values
 		if (n >= 0) {
+			setID(n);
 			// TODO implement DB interface
 			switch (n) {
 			case 1:
-				name = "Zap";
+				setName("Zap");
 				reqStr = "power:1";
 				costStr = "power:-1";
 				effectStr = "damage:1";
 				break;
 			case 2:
-				name = "Heal";
+				setName("Heal");
 				reqStr = "power:2";
 				costStr = "power:-2";
 				effectStr = "life:1";
 				break;
 			case 3:
-				name = "Shield";
+				setName("Shield");
 				reqStr = "power:3";
 				costStr = "power:-3";
 				modStr = "shield:1";
 				discardStr = "shield:-1";
 				break;
 			case 4:
-				name = "HOT";
+				setName("HoT");
 				reqStr = "power:1";
 				costStr = "power:1";
 				upkeepStr = "life:1";
