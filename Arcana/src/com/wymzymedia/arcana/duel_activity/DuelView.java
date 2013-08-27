@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
+import com.wymzymedia.arcana.duel_activity.systems.DuelDiscard;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
 import com.wymzymedia.arcana.duel_activity.systems.DuelPlay;
 import com.wymzymedia.arcana.duel_activity.systems.DuelRender;
@@ -24,6 +25,7 @@ public class DuelView extends GameView {
 	private final DuelSelect selectSys;
 	private final DuelPlay playSys;
 	private final DuelUpkeep upkeepSys;
+	private final DuelDiscard discardSys;
 
 	// Constructor
 	public DuelView(Context context) {
@@ -41,6 +43,7 @@ public class DuelView extends GameView {
 		selectSys = new DuelSelect(gameState);
 		playSys = new DuelPlay(gameState);
 		upkeepSys = new DuelUpkeep(gameState);
+		discardSys = new DuelDiscard(gameState);
 	}
 
 	@Override
@@ -120,6 +123,8 @@ public class DuelView extends GameView {
 			playSys.process();
 		} else if (((DuelState) gameState).getPhase() == 4) {
 			upkeepSys.process();
+		} else if (((DuelState) gameState).getPhase() == 5) {
+			discardSys.process();
 		}
 
 		// update game phase
