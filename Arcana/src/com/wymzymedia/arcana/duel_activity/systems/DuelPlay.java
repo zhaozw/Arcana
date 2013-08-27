@@ -21,6 +21,7 @@ public class DuelPlay extends GameSystem {
 		// set required components
 		addReqComponent("VitalsC");
 		addReqComponent("PlayCardC");
+		addReqComponent("ActiveDeckC");
 		addReqComponent("DiscardDeckC");
 	}
 
