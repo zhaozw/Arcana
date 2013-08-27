@@ -6,19 +6,15 @@ import java.util.List;
 
 import com.wymzymedia.arcana.game_utils.GameComponent;
 
-public class ActiveDeckC extends GameComponent {
-	public static final String TAG = ActiveDeckC.class.getSimpleName();
+public class ArcanaDeckC extends GameComponent {
+	public static final String TAG = ArcanaDeckC.class.getSimpleName();
 
 	// Class variables
 	private List<ArcanaCardC> cards;
 
 	// Constructor
-	public ActiveDeckC(List<Integer> c) {
-		cards = new ArrayList<ArcanaCardC>();
-		for (Integer n : c) {
-			ArcanaCardC card = new ArcanaCardC(n);
-			cards.add(card);
-		}
+	public ArcanaDeckC(List<Integer> c) {
+		setCards(c);
 	}
 
 	// Return card at given index
