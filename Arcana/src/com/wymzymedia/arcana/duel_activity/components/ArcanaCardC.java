@@ -109,6 +109,7 @@ public class ArcanaCardC extends CardC {
 				break;
 			case 3:
 				setName("Shield");
+				setDuration(2);
 				reqStr = "power:3";
 				costStr = "power:-3";
 				modStr = "shield:1";

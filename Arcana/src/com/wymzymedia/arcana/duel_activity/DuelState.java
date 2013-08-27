@@ -22,7 +22,11 @@ public class DuelState extends GameState {
 		// initialize player decks
 		List<Integer> playerDeck = new ArrayList<Integer>();
 		playerDeck.add(1);
+		playerDeck.add(1);
+		playerDeck.add(1);
 		List<Integer> computerDeck = new ArrayList<Integer>();
+		computerDeck.add(3);
+		computerDeck.add(1);
 		computerDeck.add(1);
 
 		// initialize players
@@ -91,7 +95,7 @@ public class DuelState extends GameState {
 			for (String change : changes) {
 				String[] elems = change.split(":");
 				if (elems[0].equals("damage")) {
-					// initialize target
+					// retrieve target components
 					Player target = vitals.isHuman() ? computer : human;
 					VitalsC targetVitals = (VitalsC) target
 							.getComponent("VitalsC");
@@ -103,6 +107,9 @@ public class DuelState extends GameState {
 					vitals.setLife(vitals.getLife() + Integer.valueOf(elems[1]));
 				} else if (elems[0].equals("power")) {
 					vitals.setPower(vitals.getPower()
+							+ Integer.valueOf(elems[1]));
+				} else if (elems[0].equals("shield")) {
+					vitals.setShield(vitals.getShield()
 							+ Integer.valueOf(elems[1]));
 				}
 			}
