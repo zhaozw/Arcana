@@ -49,7 +49,8 @@ public class DuelSelect extends GameSystem {
 		// if (!vitals.isHuman()) {
 		// TODO implement AI strategy instead of random select
 		if (hand.getCards().size() > 0) {
-			card = hand.drawCard(rng.nextInt(hand.getCards().size()));
+			card.loadCard(hand.drawCard(rng.nextInt(hand.getCards().size()))
+					.getID());
 		}
 		// }
 
