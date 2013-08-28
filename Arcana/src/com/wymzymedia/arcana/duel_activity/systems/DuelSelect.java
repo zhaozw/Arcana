@@ -24,6 +24,7 @@ public class DuelSelect extends GameSystem {
 
 		// set required components
 		addReqComponent("VitalsC");
+		addReqComponent("PlayCardC");
 		addReqComponent("HandDeckC");
 	}
 
