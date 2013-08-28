@@ -89,19 +89,19 @@ public class DuelRender extends GameSystem {
 		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
 				* (1 + posOffset * 3), Color.BLUE);
 
+		// render draw deck
+		renderCard(canvas, 3 + posOffset * 3, null, draw.getCards().size());
+
 		// render play card
 		if (card.getID() >= 0) {
 			renderCard(canvas, 4 + posOffset * 3, card, -1);
 		}
 
-		// render new deck
-		renderCard(canvas, 0 + posOffset * 9, null, draw.getCards().size());
-
 		// render discard deck
-		renderCard(canvas, 2 + posOffset * 9, null, discard.getCards().size());
+		renderCard(canvas, 5 + posOffset * 3, null, discard.getCards().size());
 	}
 
-	// Render battle background
+	// Render duel background
 	public void renderBackground(Canvas canvas) {
 		// render grid
 		renderGrid(canvas);
