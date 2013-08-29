@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
+import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.CardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
@@ -70,27 +71,53 @@ public class DuelRender extends GameSystem {
 		DeckC discard = (DeckC) entity.getComponent("DiscardDeckC");
 
 		// initialize variables
-		int posOffset = vitals.isHuman() ? 1 : 0;
+		int offsetFlag = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		renderCard(canvas, 1 + posOffset * 9, null, -1);
+		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
 
 		// render player vitals
 		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
-				* (1 + posOffset * 3), Color.GREEN);
+				* (1 + offsetFlag * 3), Color.GREEN);
 		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
-				* (1 + posOffset * 3), Color.BLUE);
+				* (1 + offsetFlag * 3), Color.BLUE);
 
 		// render draw deck
-		renderCard(canvas, 3 + posOffset * 3, null, draw.getCards().size());
+		renderCard(canvas, 3 + offsetFlag * 3, null, draw.getCards().size());
 
 		// render play card
 		if (card.getID() >= 0) {
-			renderCard(canvas, 4 + posOffset * 3, card, -1);
+			renderCard(canvas, 4 + offsetFlag * 3, card, -1);
 		}
 
 		// render discard deck
-		renderCard(canvas, 5 + posOffset * 3, null, discard.getCards().size());
+		renderCard(canvas, 5 + offsetFlag * 3, null, discard.getCards().size());
+	}
+
+	// Render active cards view for given player entity
+	public void renderActive(GameEntity entity, Canvas canvas) {
+		// retrieve components
+		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		ArcanaDeckC active = (ArcanaDeckC) entity.getComponent("ActiveDeckC");
+
+		// initialize variables
+		int offsetFlag = vitals.isHuman() ? 1 : 0;
+
+		// render player portrait
+		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
+
+		// render player vitals
+		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
+				* (1 + offsetFlag * 3), Color.GREEN);
+		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
+				* (1 + offsetFlag * 3), Color.BLUE);
+
+		// TODO add card offset to handle more than nine active cards
+		// render set of nine active cards
+		for (int i = 0; i < active.getCards().size() && i < 9; i++) {
+			int posNum = (i + 3) + (offsetFlag * (3 - (6 * (i / 3))));
+			renderCard(canvas, posNum, active.getCard(i), -1);
+		}
 	}
 
 	// Render duel background

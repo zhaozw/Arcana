@@ -12,6 +12,7 @@ import com.wymzymedia.arcana.duel_activity.systems.DuelPlay;
 import com.wymzymedia.arcana.duel_activity.systems.DuelRender;
 import com.wymzymedia.arcana.duel_activity.systems.DuelSelect;
 import com.wymzymedia.arcana.duel_activity.systems.DuelUpkeep;
+import com.wymzymedia.arcana.game_utils.GameEntity;
 import com.wymzymedia.arcana.game_utils.GameThread;
 import com.wymzymedia.arcana.game_utils.GameView;
 
@@ -72,6 +73,10 @@ public class DuelView extends GameView {
 			// render current display
 			if (currDisplay.equals("main")) {
 				renderMain(canvas);
+			} else if (currDisplay.equals("playerActive")) {
+				renderActive(canvas, ((DuelState) gameState).getHuman());
+			} else if (currDisplay.equals("enemyActive")) {
+				renderActive(canvas, ((DuelState) gameState).getComputer());
 			} else {
 				// log unknown display type
 				Log.d(TAG, "Unknown display type: " + currDisplay);
@@ -96,7 +101,7 @@ public class DuelView extends GameView {
 		}
 	}
 
-	// Render main screen
+	// Render basic duel screen
 	@Override
 	protected void renderMain(Canvas canvas) {
 		// render background
@@ -104,6 +109,18 @@ public class DuelView extends GameView {
 
 		// render entities
 		renderSys.process(canvas);
+
+		// render user interface
+		gameUI.renderInterface(canvas, currDisplay);
+	}
+
+	// Render active cards screen for given player entity
+	protected void renderActive(Canvas canvas, GameEntity entity) {
+		// render background
+		renderSys.renderBackground(canvas);
+
+		// render entities
+		renderSys.renderActive(entity, canvas);
 
 		// render user interface
 		gameUI.renderInterface(canvas, currDisplay);
