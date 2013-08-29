@@ -11,19 +11,19 @@ public abstract class GameInterface {
 	public static final String TAG = GameInterface.class.getSimpleName();
 
 	// Class variables
+	protected GameState state;
 	protected int screenWidth;
 	protected int screenHeight;
-	protected GameState state;
 
 	// Shared helper variables
 	protected Paint paint = new Paint();
 	protected Rect rect = new Rect();
 
 	// Constructor
-	public GameInterface(int x, int y, GameState s) {
+	public GameInterface(GameState s, int x, int y) {
+		state = s;
 		screenWidth = x;
 		screenHeight = y;
-		state = s;
 	}
 
 	// Process touch event
