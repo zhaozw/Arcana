@@ -66,7 +66,7 @@ public class DuelState extends GameState {
 		VitalsC humanVitals = (VitalsC) human.getComponent("VitalsC");
 		VitalsC compVitals = (VitalsC) computer.getComponent("VitalsC");
 
-		// set phase to the lowest phase
+		// set phase to the lowest player phase
 		if (humanVitals.getPhase() < compVitals.getPhase()) {
 			setPhase(humanVitals.getPhase());
 		} else {

@@ -3,8 +3,8 @@ package com.wymzymedia.arcana.duel_activity.systems;
 import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.DuelState;
-import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
+import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameEntity;
@@ -56,6 +56,7 @@ public class DuelPlay extends GameSystem {
 			card.loadCard(-1);
 		}
 
+		// TODO update logic to allow playing > 1 card per round
 		// progress player to next phase
 		vitals.setPhase(vitals.getPhase() + 1);
 	}

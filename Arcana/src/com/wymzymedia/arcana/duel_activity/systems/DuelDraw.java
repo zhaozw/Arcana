@@ -46,5 +46,14 @@ public class DuelDraw extends GameSystem {
 		if (drawNum > 0) {
 			hand.addCards(draw.drawTop(drawNum));
 		}
+
+		// set next game phase
+		if (vitals.isHuman()) {
+			// pause phase progression for user input
+			vitals.setPhase(0);
+		} else {
+			// progress computer to card select phase
+			vitals.setPhase(vitals.getPhase() + 1);
+		}
 	}
 }
