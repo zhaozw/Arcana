@@ -91,6 +91,11 @@ public abstract class GameView extends SurfaceView implements
 		}
 	}
 
+	// Set current display
+	public void setCurrDisplay(String s) {
+		currDisplay = s;
+	}
+
 	// Pause game by setting "paused" thread flag
 	public void pauseGame() {
 		Log.d(TAG, "Pausing game thread");
