@@ -27,11 +27,6 @@ public class DuelRender extends GameSystem {
 	private final int cardRows;
 	private final float gridWidth;
 	private final float gridHeight;
-	// TODO allow user to change dispFactor w/ pinch zoom
-	private final float dispFactor;
-	// TODO recenter view on player for each frame
-	private final float viewCenterX;
-	private final float viewCenterY;
 
 	// Shared helper variables
 	Paint paint = new Paint();
@@ -50,9 +45,6 @@ public class DuelRender extends GameSystem {
 		cardRows = 4;
 		gridWidth = mainDisplay.width() / cardCols;
 		gridHeight = mainDisplay.height() / cardRows;
-		dispFactor = 1;
-		viewCenterX = mainDisplay.exactCenterX();
-		viewCenterY = mainDisplay.exactCenterX();
 
 		// set required components
 		addReqComponent("VitalsC");
