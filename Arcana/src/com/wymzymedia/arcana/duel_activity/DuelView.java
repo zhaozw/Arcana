@@ -49,7 +49,7 @@ public class DuelView extends GameView {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		// determine number of display rows and columns
+		// set number of card rows and columns based on screen size/orientation
 		int cols = 3;
 		int rows = 4;
 

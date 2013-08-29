@@ -67,6 +67,7 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
+	// TODO rework logic to allow variable rows/columns layouts
 	// Execute logic on entity
 	protected void execSystem(GameEntity entity, Canvas canvas) {
 		// retrieve components
@@ -99,6 +100,7 @@ public class DuelRender extends GameSystem {
 		renderCard(canvas, 5 + offsetFlag * 3, null, discard.getCards().size());
 	}
 
+	// TODO rework logic to allow variable rows/columns layouts
 	// Render active cards view for given player entity
 	public void renderActive(GameEntity entity, Canvas canvas) {
 		// retrieve components
@@ -131,7 +133,8 @@ public class DuelRender extends GameSystem {
 		renderGrid(canvas);
 	}
 
-	// Render life or power bars
+	// TODO rework logic into more general implementation
+	// Render vertically stacking bars at given starting coordinate
 	public void renderBars(Canvas canvas, int bars, float startX, float startY,
 			int color) {
 		float setHeight = cellHeight * 0.1f;
@@ -148,6 +151,7 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
+	// TODO rework logic into more general implementation
 	// Render card at given position with optional card count
 	public void renderCard(Canvas canvas, int position, CardC card, int count) {
 		// initialize card coordinate
@@ -243,4 +247,6 @@ public class DuelRender extends GameSystem {
 					lineStop[1], paint);
 		}
 	}
+
+	// TODO implement renderSingleCard() to display zoomed view of given card
 }
