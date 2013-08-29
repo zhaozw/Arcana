@@ -41,6 +41,16 @@ public class DuelState extends GameState {
 		// draw first hand
 	}
 
+	// Return human player
+	public Player getHuman() {
+		return human;
+	}
+
+	// Return computer player
+	public Player getComputer() {
+		return computer;
+	}
+
 	// Return duel phase
 	public int getPhase() {
 		return phase;
