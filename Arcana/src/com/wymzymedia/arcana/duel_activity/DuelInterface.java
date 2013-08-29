@@ -1,7 +1,6 @@
 package com.wymzymedia.arcana.duel_activity;
 
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -12,12 +11,24 @@ public class DuelInterface extends GameInterface {
 	public static final String TAG = DuelInterface.class.getSimpleName();
 
 	// Class variables
-	private final Rect mainDisplay;
+	private final int screenWidth;
+	private final int screenHeight;
+	private final int cardRows;
+	private final int cardCols;
+	private final float cellWidth;
+	private final float cellHeight;
 
 	// Constructor
-	public DuelInterface(int x, int y, GameState s) {
-		super(x, y, s);
-		mainDisplay = new Rect(0, 0, screenWidth, screenHeight);
+	public DuelInterface(GameState s, int dispX, int dispY, int cols, int rows) {
+		super(s, dispX, dispY);
+
+		// initialize variables
+		screenWidth = dispX;
+		screenHeight = dispY;
+		cardCols = cols;
+		cardRows = rows;
+		cellWidth = dispX / cols;
+		cellHeight = dispY / rows;
 	}
 
 	// Process touch event
@@ -42,11 +53,6 @@ public class DuelInterface extends GameInterface {
 			// log unknown interface type
 			Log.d(TAG, "Unknown interface type: " + type);
 		}
-	}
-
-	// Return main display rectangle
-	public Rect getMainDisplay() {
-		return mainDisplay;
 	}
 
 	// Process interaction with main display

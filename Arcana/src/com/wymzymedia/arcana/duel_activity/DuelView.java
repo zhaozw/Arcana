@@ -49,12 +49,17 @@ public class DuelView extends GameView {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
+		// determine number of display rows and columns
+		int cols = 3;
+		int rows = 4;
+
 		// initialize render system
 		renderSys = new DuelRender(gameState, getContext(), getWidth(),
-				getHeight());
+				getHeight(), cols, rows);
 
 		// initialize user interface
-		gameUI = new DuelInterface(getWidth(), getHeight(), gameState);
+		gameUI = new DuelInterface(gameState, getWidth(), getHeight(), cols,
+				rows);
 
 		super.surfaceCreated(holder);
 	}

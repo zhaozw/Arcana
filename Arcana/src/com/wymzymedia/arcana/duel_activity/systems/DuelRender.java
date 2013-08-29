@@ -23,11 +23,12 @@ public class DuelRender extends GameSystem {
 
 	// Class variables
 	private final Context context;
-	private final Rect mainDisplay;
+	private final int screenWidth;
+	private final int screenHeight;
 	private final int cardCols;
 	private final int cardRows;
-	private final float gridWidth;
-	private final float gridHeight;
+	private final float cellWidth;
+	private final float cellHeight;
 
 	// Shared helper variables
 	Paint paint = new Paint();
@@ -36,21 +37,25 @@ public class DuelRender extends GameSystem {
 	Matrix matrix = new Matrix();
 
 	// Constructor
-	public DuelRender(GameState state, Context c, int dispX, int dispY) {
+	public DuelRender(GameState state, Context c, int dispX, int dispY,
+			int cols, int rows) {
 		super(state);
 
 		// initialize variables
 		context = c;
-		mainDisplay = new Rect(0, 0, dispX, dispY);
-		cardCols = 3;
-		cardRows = 4;
-		gridWidth = mainDisplay.width() / cardCols;
-		gridHeight = mainDisplay.height() / cardRows;
+		screenWidth = dispX;
+		screenHeight = dispY;
+		cardCols = cols;
+		cardRows = rows;
+		cellWidth = dispX / cols;
+		cellHeight = dispY / rows;
 
 		// set required components
 		addReqComponent("VitalsC");
 		addReqComponent("PlayCardC");
 		addReqComponent("DrawDeckC");
+		addReqComponent("HandDeckC");
+		addReqComponent("ActiveDeckC");
 		addReqComponent("DiscardDeckC");
 	}
 
@@ -77,9 +82,9 @@ public class DuelRender extends GameSystem {
 		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
 
 		// render player vitals
-		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
+		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
 				* (1 + offsetFlag * 3), Color.GREEN);
-		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
+		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
 				* (1 + offsetFlag * 3), Color.BLUE);
 
 		// render draw deck
@@ -107,9 +112,9 @@ public class DuelRender extends GameSystem {
 		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
 
 		// render player vitals
-		renderBars(canvas, vitals.getLife(), gridWidth, gridHeight
+		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
 				* (1 + offsetFlag * 3), Color.GREEN);
-		renderBars(canvas, vitals.getPower(), gridWidth * 1.85f, gridHeight
+		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
 				* (1 + offsetFlag * 3), Color.BLUE);
 
 		// TODO add card offset to handle more than nine active cards
@@ -129,8 +134,8 @@ public class DuelRender extends GameSystem {
 	// Render life or power bars
 	public void renderBars(Canvas canvas, int bars, float startX, float startY,
 			int color) {
-		float setHeight = gridHeight * 0.1f;
-		float barWidth = gridWidth * 0.15f;
+		float setHeight = cellHeight * 0.1f;
+		float barWidth = cellWidth * 0.15f;
 		float barHeight = setHeight * 0.9f;
 		float barX = startX;
 		float barY = startY - (setHeight * 0.1f) - barHeight;
@@ -148,8 +153,8 @@ public class DuelRender extends GameSystem {
 		// initialize card coordinate
 		int offsetX = position % 3;
 		int offsetY = position / 3;
-		float posX = gridWidth / 2 + gridWidth * offsetX;
-		float posY = gridHeight / 2 + gridHeight * offsetY;
+		float posX = cellWidth / 2 + cellWidth * offsetX;
+		float posY = cellHeight / 2 + cellHeight * offsetY;
 
 		// retrieve card image
 		Bitmap cardBitmap = null;
@@ -208,9 +213,9 @@ public class DuelRender extends GameSystem {
 
 			// initialize card count coordinate
 			paint.setTextAlign(Paint.Align.LEFT);
-			float textX = posX + gridWidth / 2;
+			float textX = posX + cellWidth / 2;
 			textX = textX - rect.width() - textSize / 2;
-			float textY = posY + gridHeight / 2;
+			float textY = posY + cellHeight / 2;
 			textY = textY - textSize / 2;
 
 			// render card count
@@ -226,14 +231,14 @@ public class DuelRender extends GameSystem {
 
 		// render grid
 		for (int x = 0; x < cardCols; x++) {
-			float[] lineStart = { gridWidth * x, 0 };
-			float[] lineStop = { gridWidth * x, mainDisplay.height() - 1 };
+			float[] lineStart = { cellWidth * x, 0 };
+			float[] lineStop = { cellWidth * x, screenHeight - 1 };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
 		for (int y = 0; y < cardRows; y++) {
-			float[] lineStart = { 0, gridHeight * y };
-			float[] lineStop = { mainDisplay.width() - 1, gridHeight * y };
+			float[] lineStart = { 0, cellHeight * y };
+			float[] lineStop = { screenWidth - 1, cellHeight * y };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
