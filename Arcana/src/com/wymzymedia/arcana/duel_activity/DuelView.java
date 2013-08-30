@@ -59,7 +59,7 @@ public class DuelView extends GameView {
 
 		// initialize user interface
 		gameUI = new DuelInterface(gameState, getWidth(), getHeight(), cols,
-				rows);
+				rows, this);
 
 		super.surfaceCreated(holder);
 	}
