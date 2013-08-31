@@ -8,8 +8,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
+import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.CardC;
 import com.wymzymedia.arcana.duel_activity.components.DeckC;
@@ -80,7 +82,7 @@ public class DuelRender extends GameSystem {
 		int offsetFlag = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
+		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
 
 		// render player vitals
 		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
@@ -89,15 +91,16 @@ public class DuelRender extends GameSystem {
 				* (1 + offsetFlag * 3), Color.BLUE);
 
 		// render draw deck
-		renderCard(canvas, 3 + offsetFlag * 3, null, draw.getCards().size());
+		renderMiniCard(canvas, 3 + offsetFlag * 3, null, draw.getCards().size());
 
 		// render play card
 		if (card.getID() >= 0) {
-			renderCard(canvas, 4 + offsetFlag * 3, card, -1);
+			renderMiniCard(canvas, 4 + offsetFlag * 3, card, -1);
 		}
 
 		// render discard deck
-		renderCard(canvas, 5 + offsetFlag * 3, null, discard.getCards().size());
+		renderMiniCard(canvas, 5 + offsetFlag * 3, null, discard.getCards()
+				.size());
 	}
 
 	// TODO rework logic to allow variable rows/columns layouts
@@ -111,7 +114,7 @@ public class DuelRender extends GameSystem {
 		int offsetFlag = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		renderCard(canvas, 1 + offsetFlag * 9, null, -1);
+		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
 
 		// render player vitals
 		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
@@ -123,14 +126,13 @@ public class DuelRender extends GameSystem {
 		// render set of nine active cards
 		for (int i = 0; i < active.getCards().size() && i < 9; i++) {
 			int posNum = (i + 3) + (offsetFlag * (3 - (6 * (i / 3))));
-			renderCard(canvas, posNum, active.getCard(i), -1);
+			renderMiniCard(canvas, posNum, active.getCard(i), -1);
 		}
 	}
 
 	// Render duel background
 	public void renderBackground(Canvas canvas) {
-		// render grid
-		renderGrid(canvas);
+		// TODO add background image
 	}
 
 	// TODO rework logic into more general implementation
@@ -151,9 +153,30 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
+	// Render card grid
+	public void renderGrid(Canvas canvas) {
+		// initialize display variables
+		paint.setColor(Defaults.TEXT_COLOR);
+
+		// render grid
+		for (int x = 0; x < cardCols; x++) {
+			float[] lineStart = { cellWidth * x, 0 };
+			float[] lineStop = { cellWidth * x, screenHeight - 1 };
+			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
+					lineStop[1], paint);
+		}
+		for (int y = 0; y < cardRows; y++) {
+			float[] lineStart = { 0, cellHeight * y };
+			float[] lineStop = { screenWidth - 1, cellHeight * y };
+			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
+					lineStop[1], paint);
+		}
+	}
+
 	// TODO rework logic into more general implementation
 	// Render card at given position with optional card count
-	public void renderCard(Canvas canvas, int position, CardC card, int count) {
+	public void renderMiniCard(Canvas canvas, int position, CardC card,
+			int count) {
 		// initialize card coordinate
 		int offsetX = position % 3;
 		int offsetY = position / 3;
@@ -228,25 +251,60 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
-	// Render card grid
-	private void renderGrid(Canvas canvas) {
-		// initialize display variables
-		paint.setColor(Defaults.TEXT_COLOR);
+	// Render zoom view of single card
+	public void renderZoomCard(int cardID, Canvas canvas) {
+		// TODO remove
+		Log.d(TAG, "card id: " + cardID);
 
-		// render grid
-		for (int x = 0; x < cardCols; x++) {
-			float[] lineStart = { cellWidth * x, 0 };
-			float[] lineStop = { cellWidth * x, screenHeight - 1 };
-			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
-					lineStop[1], paint);
-		}
-		for (int y = 0; y < cardRows; y++) {
-			float[] lineStart = { 0, cellHeight * y };
-			float[] lineStop = { screenWidth - 1, cellHeight * y };
-			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
-					lineStop[1], paint);
+		// initialize variables
+		ArcanaCardC card = new ArcanaCardC(cardID);
+		int posX = screenWidth / 2;
+		int posY = screenHeight / 2;
+
+		// retrieve card image
+		Bitmap cardBitmap = null;
+		// TODO retrieve image from resources
+		// Bitmap cardBitmap = BitmapFactory.decodeResource(
+		// context.getResources(), card.getID());
+
+		// scale card to screen
+		int cardWidth = 550;
+		int cardHeight = 770;
+		if (cardBitmap != null) {
+			// render card
+			// TODO refine bitmap rotation and rendering
+			// Bitmap entityBitmap = BitmapFactory.decodeResource(
+			// context.getResources(), identity.getImageKey());
+			// Bitmap scaledBitmap = Bitmap.createScaledBitmap(entityBitmap,
+			// Math.round(size * 2), Math.round(size * 2), true);
+			// matrix.setRotate(position.getFacing(), size, size);
+			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
+			// canvas.drawBitmap(scaledBitmap, matrix, null);
+		} else {
+			// render card shape
+			paint.setColor(Color.GRAY);
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
+					+ cardWidth / 2, posY + cardHeight / 2, paint);
+
+			// render card name
+			if (card != null) {
+				// initialize name string
+				String nameStr = card.getName();
+				// TODO calculate text size instead of fixed value
+				int textSize = 50;
+				paint.setTextSize(textSize);
+				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
+
+				// initialize text coordinate
+				paint.setTextAlign(Paint.Align.CENTER);
+				float textX = posX;
+				float textY = posY + rect.height() / 2;
+
+				// render card name
+				paint.setColor(Defaults.TEXT_COLOR);
+				canvas.drawText(nameStr, textX, textY, paint);
+			}
 		}
 	}
-
-	// TODO implement renderSingleCard() to display zoomed view of given card
 }
