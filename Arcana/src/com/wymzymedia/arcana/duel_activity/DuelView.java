@@ -27,6 +27,7 @@ public class DuelView extends GameView {
 	private final DuelPlay playSys;
 	private final DuelUpkeep upkeepSys;
 	private final DuelDiscard discardSys;
+	private int zoomCard;
 
 	// Constructor
 	public DuelView(Context context) {
@@ -45,6 +46,7 @@ public class DuelView extends GameView {
 		playSys = new DuelPlay(gameState);
 		upkeepSys = new DuelUpkeep(gameState);
 		discardSys = new DuelDiscard(gameState);
+		zoomCard = -1;
 	}
 
 	@Override
@@ -82,6 +84,8 @@ public class DuelView extends GameView {
 				renderActive(canvas, ((DuelState) gameState).getHuman());
 			} else if (currDisplay.equals("enemyActive")) {
 				renderActive(canvas, ((DuelState) gameState).getComputer());
+			} else if (currDisplay.equals("card")) {
+				renderCard(canvas, zoomCard);
 			} else {
 				// log unknown display type
 				Log.d(TAG, "Unknown display type: " + currDisplay);
@@ -120,15 +124,35 @@ public class DuelView extends GameView {
 	}
 
 	// Render active cards screen for given player entity
-	protected void renderActive(Canvas canvas, GameEntity entity) {
+	private void renderActive(Canvas canvas, GameEntity entity) {
 		// render background
 		renderSys.renderBackground(canvas);
+
+		// render grid
+		renderSys.renderGrid(canvas);
 
 		// render entities
 		renderSys.renderActive(entity, canvas);
 
 		// render user interface
 		gameUI.renderInterface(canvas, currDisplay);
+	}
+
+	// Render zoomed view of single card
+	private void renderCard(Canvas canvas, int cardID) {
+		// render background
+		renderSys.renderBackground(canvas);
+
+		// render card
+		renderSys.renderZoomCard(cardID, canvas);
+
+		// render user interface
+		gameUI.renderInterface(canvas, currDisplay);
+	}
+
+	// Set zoom view card id
+	public void setZoomCard(int n) {
+		zoomCard = 1;
 	}
 
 	// Update game
