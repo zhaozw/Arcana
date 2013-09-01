@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.game_utils.GameInterface;
 import com.wymzymedia.arcana.game_utils.GameState;
@@ -43,18 +44,22 @@ public class DuelInterface extends GameInterface {
 	// Process touch event
 	@Override
 	public void processTouchEvent(String currDisplay, MotionEvent event) {
-		if (currDisplay.equals("main")) {
-			executeActionStr(getActionStr(event));
-		} else if (currDisplay.equals("enemyActive")) {
-			executeActionStr(getActionStr(event));
-		} else if (currDisplay.equals("playerActive")) {
-			executeActionStr(getActionStr(event));
-		} else if (currDisplay.equals("card")) {
-			// set display to main
-			view.setCurrDisplay("main");
-		} else {
-			// log unknown interface type
-			Log.d(TAG, "Unknown interface type: " + currDisplay);
+		// TODO remove
+		Log.d(TAG, ">>>>> PROCESSING TOUCH <<<<<");
+		if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+			if (currDisplay.equals("main")) {
+				executeActionStr(getActionStr(event));
+			} else if (currDisplay.equals("enemyActive")) {
+				executeActionStr(getActionStr(event));
+			} else if (currDisplay.equals("playerActive")) {
+				executeActionStr(getActionStr(event));
+			} else if (currDisplay.equals("card")) {
+				// set display to main
+				view.setCurrDisplay("main");
+			} else {
+				// log unknown interface type
+				Log.d(TAG, "Unknown interface type: " + currDisplay);
+			}
 		}
 	}
 
@@ -62,35 +67,45 @@ public class DuelInterface extends GameInterface {
 	@Override
 	public void renderInterface(Canvas canvas, String type) {
 		if (type.equals("main")) {
-			// initialize interface actions
+			// set interface actions
 			Arrays.fill(cellActionStr, null);
 			cellActionStr[1] = "display:enemyActive";
 			cellActionStr[9] = "display:hand";
 			cellActionStr[10] = "display:playerActive";
 			cellActionStr[11] = "phase:4";
 		} else if (type.equals("enemyActive")) {
-			// initialize interface actions
+			// retrieve active cards
+			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state)
+					.getComputer().getComponent("ActiveDeckC");
+
+			// set interface actions
 			Arrays.fill(cellActionStr, null);
 			cellActionStr[1] = "display:main";
 			for (int i = 3; i <= 11; i++) {
-				int cardID = -1;
-				if (cardID >= 0) {
-					cellActionStr[i] = "display:card:" + cardID;
+				// retrieve card ID at given position
+				if (i - 3 < active.getCards().size()) {
+					int cardID = active.getCard(i - 3).getID();
+					if (cardID >= 0) {
+						cellActionStr[i] = "display:card:" + cardID;
+					}
 				}
 			}
 		} else if (type.equals("playerActive")) {
-			// initialize interface actions
+			// retrieve active cards
+			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state).getHuman()
+					.getComponent("ActiveDeckC");
+
+			// set interface actions
 			Arrays.fill(cellActionStr, null);
 			for (int i = 8; i >= 0; i--) {
-				int cardID = -1;
-				if (cardID >= 0) {
-					cellActionStr[i] = "display:card:" + cardID;
-				}
+				// TODO fix action initialization for player active display
 			}
 			cellActionStr[9] = "display:hand";
 			cellActionStr[10] = "display:main";
 			cellActionStr[11] = "phase:4";
 		} else if (type.equals("card")) {
+			// set interface actions
+			Arrays.fill(cellActionStr, null);
 		} else {
 			// log unknown interface type
 			Log.d(TAG, "Unknown interface type: " + type);
@@ -99,15 +114,11 @@ public class DuelInterface extends GameInterface {
 
 	// Identify and return action string correlating to user touch
 	public String getActionStr(MotionEvent event) {
-		// TODO remove
-		// Log.d(TAG, event.toString());
-
 		// map touch event to card cell
 		for (int i = 0; i < (cardRows * cardCols); i++) {
 			int gridX = i % cardCols;
 			int gridY = i / cardCols;
-			if (event.getAction() == android.view.MotionEvent.ACTION_DOWN
-					&& event.getX() >= gridX * cellWidth
+			if (event.getX() >= gridX * cellWidth
 					&& event.getX() <= (gridX + 1) * cellWidth
 					&& event.getY() >= gridY * cellHeight
 					&& event.getY() <= (gridY + 1) * cellHeight) {
@@ -126,6 +137,12 @@ public class DuelInterface extends GameInterface {
 			if (actionElems[0].equals("display")) {
 				// set display
 				view.setCurrDisplay(actionElems[1]);
+
+				// set zoomCard if needed
+				if (actionElems[1].equals("card")) {
+					((DuelView) view).setZoomCard(Integer
+							.valueOf(actionElems[2]));
+				}
 			} else if (actionElems[0].equals("phase")) {
 				// set player phase
 				VitalsC vitals = (VitalsC) ((DuelState) state).getHuman()
