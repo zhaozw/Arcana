@@ -124,9 +124,14 @@ public class DuelRender extends GameSystem {
 
 		// TODO add card offset to handle more than nine active cards
 		// render set of nine active cards
-		for (int i = 0; i < active.getCards().size() && i < 9; i++) {
-			int posNum = (i + 3) + (offsetFlag * (3 - (6 * (i / 3))));
-			renderMiniCard(canvas, posNum, active.getCard(i), -1);
+		if (vitals.isHuman()) {
+			for (int i = 8; i < active.getCards().size() && i <= 0; i--) {
+				renderMiniCard(canvas, i + 3, active.getCard(i), -1);
+			}
+		} else {
+			for (int i = 0; i < active.getCards().size() && i < 9; i++) {
+				renderMiniCard(canvas, i + 3, active.getCard(i), -1);
+			}
 		}
 	}
 
