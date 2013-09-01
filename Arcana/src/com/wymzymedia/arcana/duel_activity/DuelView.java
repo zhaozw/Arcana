@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
+import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDiscard;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
 import com.wymzymedia.arcana.duel_activity.systems.DuelPlay;
@@ -170,9 +171,15 @@ public class DuelView extends GameView {
 
 	// Set human player's play card
 	public void setPlayCard(int n) {
+		// set play card
 		ArcanaCardC card = (ArcanaCardC) ((DuelState) gameState).getHuman()
 				.getComponent("PlayCardC");
 		card.loadCard(n);
+
+		// progress player to select phase
+		VitalsC vitals = (VitalsC) ((DuelState) gameState).getHuman()
+				.getComponent("VitalsC");
+		vitals.setPhase(2);
 	}
 
 	// Set zoom view card id

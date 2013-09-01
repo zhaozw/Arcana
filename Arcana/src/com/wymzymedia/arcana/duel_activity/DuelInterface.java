@@ -112,10 +112,10 @@ public class DuelInterface extends GameInterface {
 
 			// set interface actions
 			Arrays.fill(cellActionStr, null);
-			for (int i = 3; i <= 11; i++) {
+			for (int i = 0; i <= 8; i++) {
 				// retrieve card ID at given position
-				if (i - 3 < hand.getCards().size()) {
-					int cardID = hand.getCard(i - 3).getID();
+				if (i < hand.getCards().size()) {
+					int cardID = hand.getCard(i).getID();
 					if (cardID >= 0) {
 						cellActionStr[i] = "select:card:" + cardID;
 					}
@@ -165,8 +165,14 @@ public class DuelInterface extends GameInterface {
 							.valueOf(actionElems[2]));
 				}
 			} else if (actionElems[0].equals("select")) {
-				// set player play card
-				((DuelView) view).setPlayCard(Integer.valueOf(actionElems[2]));
+				if (actionElems[1].equals("card")) {
+					// set player play card
+					((DuelView) view).setPlayCard(Integer
+							.valueOf(actionElems[2]));
+
+					// set display to main
+					view.setCurrDisplay("main");
+				}
 			} else if (actionElems[0].equals("phase")) {
 				// set player phase
 				VitalsC vitals = (VitalsC) ((DuelState) state).getHuman()
