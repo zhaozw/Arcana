@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
+import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDiscard;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
 import com.wymzymedia.arcana.duel_activity.systems.DuelPlay;
@@ -84,6 +85,8 @@ public class DuelView extends GameView {
 				renderActive(canvas, ((DuelState) gameState).getHuman());
 			} else if (currDisplay.equals("enemyActive")) {
 				renderActive(canvas, ((DuelState) gameState).getComputer());
+			} else if (currDisplay.equals("hand")) {
+				renderHand(canvas, ((DuelState) gameState).getHuman());
 			} else if (currDisplay.equals("card")) {
 				renderCard(canvas, zoomCard);
 			} else {
@@ -138,6 +141,21 @@ public class DuelView extends GameView {
 		gameUI.renderInterface(canvas, currDisplay);
 	}
 
+	// Render hand cards screen for given player entity
+	private void renderHand(Canvas canvas, GameEntity entity) {
+		// render background
+		renderSys.renderBackground(canvas);
+
+		// render grid
+		renderSys.renderGrid(canvas);
+
+		// render entities
+		renderSys.renderHand(entity, canvas);
+
+		// render user interface
+		gameUI.renderInterface(canvas, currDisplay);
+	}
+
 	// Render zoomed view of single card
 	private void renderCard(Canvas canvas, int cardID) {
 		// render background
@@ -150,9 +168,16 @@ public class DuelView extends GameView {
 		gameUI.renderInterface(canvas, currDisplay);
 	}
 
+	// Set human player's play card
+	public void setPlayCard(int n) {
+		ArcanaCardC card = (ArcanaCardC) ((DuelState) gameState).getHuman()
+				.getComponent("PlayCardC");
+		card.loadCard(n);
+	}
+
 	// Set zoom view card id
 	public void setZoomCard(int n) {
-		zoomCard = 1;
+		zoomCard = n;
 	}
 
 	// Update game

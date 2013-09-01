@@ -53,6 +53,8 @@ public class DuelInterface extends GameInterface {
 				executeActionStr(getActionStr(event));
 			} else if (currDisplay.equals("playerActive")) {
 				executeActionStr(getActionStr(event));
+			} else if (currDisplay.equals("hand")) {
+				executeActionStr(getActionStr(event));
 			} else if (currDisplay.equals("card")) {
 				// set display to main
 				view.setCurrDisplay("main");
@@ -103,6 +105,25 @@ public class DuelInterface extends GameInterface {
 			cellActionStr[9] = "display:hand";
 			cellActionStr[10] = "display:main";
 			cellActionStr[11] = "phase:4";
+		} else if (type.equals("hand")) {
+			// retrieve hand cards
+			ArcanaDeckC hand = (ArcanaDeckC) ((DuelState) state).getHuman()
+					.getComponent("HandDeckC");
+
+			// set interface actions
+			Arrays.fill(cellActionStr, null);
+			for (int i = 3; i <= 11; i++) {
+				// retrieve card ID at given position
+				if (i - 3 < hand.getCards().size()) {
+					int cardID = hand.getCard(i - 3).getID();
+					if (cardID >= 0) {
+						cellActionStr[i] = "select:card:" + cardID;
+					}
+				}
+			}
+			cellActionStr[9] = "display:main";
+			cellActionStr[10] = "display:playerActive";
+			cellActionStr[11] = "phase:4";
 		} else if (type.equals("card")) {
 			// set interface actions
 			Arrays.fill(cellActionStr, null);
@@ -143,6 +164,9 @@ public class DuelInterface extends GameInterface {
 					((DuelView) view).setZoomCard(Integer
 							.valueOf(actionElems[2]));
 				}
+			} else if (actionElems[0].equals("select")) {
+				// set player play card
+				((DuelView) view).setPlayCard(Integer.valueOf(actionElems[2]));
 			} else if (actionElems[0].equals("phase")) {
 				// set player phase
 				VitalsC vitals = (VitalsC) ((DuelState) state).getHuman()

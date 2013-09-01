@@ -8,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
@@ -125,7 +124,7 @@ public class DuelRender extends GameSystem {
 		// TODO add card offset to handle more than nine active cards
 		// render set of nine active cards
 		if (vitals.isHuman()) {
-			for (int i = 8; i < active.getCards().size() && i <= 0; i--) {
+			for (int i = 8; i < active.getCards().size() && i >= 0; i--) {
 				renderMiniCard(canvas, i + 3, active.getCard(i), -1);
 			}
 		} else {
@@ -175,6 +174,37 @@ public class DuelRender extends GameSystem {
 			float[] lineStop = { screenWidth - 1, cellHeight * y };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
+		}
+	}
+
+	// Render hand cards view for given player entity
+	public void renderHand(GameEntity entity, Canvas canvas) {
+		// retrieve components
+		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		ArcanaDeckC hand = (ArcanaDeckC) entity.getComponent("HandDeckC");
+
+		// initialize variables
+		int offsetFlag = vitals.isHuman() ? 1 : 0;
+
+		// render player portrait
+		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
+
+		// render player vitals
+		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
+				* (1 + offsetFlag * 3), Color.GREEN);
+		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
+				* (1 + offsetFlag * 3), Color.BLUE);
+
+		// TODO add card offset to handle more than nine active cards
+		// render set of nine active cards
+		if (vitals.isHuman()) {
+			for (int i = 0; i < hand.getCards().size() && i < 9; i++) {
+				renderMiniCard(canvas, i, hand.getCard(i), -1);
+			}
+		} else {
+			for (int i = 0; i < hand.getCards().size() && i < 9; i++) {
+				renderMiniCard(canvas, i + 3, hand.getCard(i), -1);
+			}
 		}
 	}
 
@@ -258,9 +288,6 @@ public class DuelRender extends GameSystem {
 
 	// Render zoom view of single card
 	public void renderZoomCard(int cardID, Canvas canvas) {
-		// TODO remove
-		Log.d(TAG, "card id: " + cardID);
-
 		// initialize variables
 		ArcanaCardC card = new ArcanaCardC(cardID);
 		int posX = screenWidth / 2;
