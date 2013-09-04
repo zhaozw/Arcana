@@ -28,9 +28,9 @@ public class DuelRender extends GameSystem {
 	private final int cardRows;
 	private final float cellWidth;
 	private final float cellHeight;
-	private final int textFactor;
 	private final int cardWidth;
 	private final int cardHeight;
+	private final int textFactor;
 	private final Rect[] gridPosition;
 	private final Rect zoomPosition;
 
@@ -55,12 +55,12 @@ public class DuelRender extends GameSystem {
 		// initialize card width and height
 		int widthRatio = 150;
 		int heightRatio = 210;
-		textFactor = 6;
 		int dimenFactor = (cellWidth / widthRatio < cellHeight / heightRatio) ? (int) cellWidth
 				/ widthRatio
 				: (int) cellHeight / heightRatio;
 		cardWidth = widthRatio * dimenFactor;
 		cardHeight = heightRatio * dimenFactor;
+		textFactor = 6;
 
 		// initialize position rectangles
 		gridPosition = new Rect[cols * rows];
