@@ -116,8 +116,8 @@ public class DuelRender extends GameSystem {
 
 		// render draw deck
 		renderCard(canvas, gridPosition[3 + offsetFlag * 3], -1);
-		renderNumber(canvas, gridPosition[3 + offsetFlag * 3], draw.getCards()
-				.size());
+		renderNumber(canvas, gridPosition[3 + offsetFlag * 3],
+				String.valueOf(draw.getCards().size()));
 
 		// render play card
 		if (card.getID() >= 0) {
@@ -126,8 +126,8 @@ public class DuelRender extends GameSystem {
 
 		// render discard deck
 		renderCard(canvas, gridPosition[5 + offsetFlag * 3], -1);
-		renderNumber(canvas, gridPosition[5 + offsetFlag * 3], discard
-				.getCards().size());
+		renderNumber(canvas, gridPosition[5 + offsetFlag * 3],
+				String.valueOf(discard.getCards().size()));
 	}
 
 	// Render duel background
@@ -179,22 +179,9 @@ public class DuelRender extends GameSystem {
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			canvas.drawRect(position, paint);
 
-			// draw card name
-			if (cardID >= 0) {
-				// initialize text variables
-				String nameStr = card.getName();
-				int textSize = position.height() / textFactor;
-				paint.setTextSize(textSize);
-				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
-
-				// calculate text coordinate
-				float textX = position.exactCenterX();
-				float textY = position.exactCenterY() + rect.height() / 2;
-
-				// draw name text
-				paint.setTextAlign(Paint.Align.CENTER);
-				paint.setColor(Defaults.TEXT_COLOR);
-				canvas.drawText(nameStr, textX, textY, paint);
+			// draw card name if available
+			if (card.getID() >= 0) {
+				renderName(canvas, position, card.getName());
 			}
 		}
 	}
@@ -219,25 +206,38 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
-	// Render number text at given coordinate
-	public void renderNumber(Canvas canvas, Rect position, int count) {
-		// render card count
-		if (count >= 0) {
-			// initialize text variables
-			String countStr = String.valueOf(count);
-			int textSize = position.height() / textFactor;
-			paint.setTextSize(textSize);
-			paint.getTextBounds(countStr, 0, countStr.length(), rect);
+	// Render name for given position
+	public void renderName(Canvas canvas, Rect position, String nameStr) {
+		// initialize text variables
+		int textSize = position.height() / textFactor;
+		paint.setTextSize(textSize);
+		paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
 
-			// calculate text coordinate
-			float textX = position.right - rect.width() - textSize / 2;
-			float textY = position.bottom - textSize / 2;
+		// calculate text coordinate
+		float textX = position.exactCenterX();
+		float textY = position.exactCenterY() + rect.height() / 2;
 
-			// render card count
-			paint.setTextAlign(Paint.Align.LEFT);
-			paint.setColor(Defaults.TEXT_COLOR);
-			canvas.drawText(countStr, textX, textY, paint);
-		}
+		// draw text
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setColor(Defaults.TEXT_COLOR);
+		canvas.drawText(nameStr, textX, textY, paint);
+	}
+
+	// Render number for given position
+	public void renderNumber(Canvas canvas, Rect position, String numberStr) {
+		// initialize text variables
+		int textSize = position.height() / textFactor;
+		paint.setTextSize(textSize);
+		paint.getTextBounds(numberStr, 0, numberStr.length(), rect);
+
+		// calculate text coordinate
+		float textX = position.right - rect.width() - textSize / 2;
+		float textY = position.bottom - textSize / 2;
+
+		// draw text
+		paint.setTextAlign(Paint.Align.LEFT);
+		paint.setColor(Defaults.TEXT_COLOR);
+		canvas.drawText(numberStr, textX, textY, paint);
 	}
 
 	// TODO rework logic to allow variable rows/columns layouts
