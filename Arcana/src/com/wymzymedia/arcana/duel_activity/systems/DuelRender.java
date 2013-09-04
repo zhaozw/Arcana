@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.wymzymedia.arcana.duel_activity.Defaults;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
@@ -242,9 +243,18 @@ public class DuelRender extends GameSystem {
 
 	// TODO rework logic to allow variable rows/columns layouts
 	// Render set view of given cards for given player entity
-	public void renderSet(GameEntity entity, Canvas canvas, ArcanaDeckC deck) {
+	public void renderSet(GameEntity entity, Canvas canvas, String setName) {
 		// retrieve components
 		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+		ArcanaDeckC deck = null;
+		if (setName.equals("active")) {
+			deck = (ArcanaDeckC) entity.getComponent("ActiveDeckC");
+		} else if (setName.equals("hand")) {
+			deck = (ArcanaDeckC) entity.getComponent("HandDeckC");
+		} else {
+			// log unknown set type
+			Log.d(TAG, "Unknown set type: " + setName);
+		}
 
 		// initialize variables
 		int offsetFlag = vitals.isHuman() ? 1 : 0;

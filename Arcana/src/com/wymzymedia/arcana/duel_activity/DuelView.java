@@ -7,7 +7,6 @@ import android.view.SurfaceHolder;
 
 import com.wymzymedia.arcana.AppDefaults;
 import com.wymzymedia.arcana.duel_activity.components.ArcanaCardC;
-import com.wymzymedia.arcana.duel_activity.components.ArcanaDeckC;
 import com.wymzymedia.arcana.duel_activity.components.VitalsC;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDiscard;
 import com.wymzymedia.arcana.duel_activity.systems.DuelDraw;
@@ -140,8 +139,7 @@ public class DuelView extends GameView {
 		renderSys.renderGrid(canvas);
 
 		// render entities
-		renderSys.renderSet(entity, canvas,
-				(ArcanaDeckC) entity.getComponent("ActiveDeckC"));
+		renderSys.renderSet(entity, canvas, "active");
 
 		// render user interface
 		gameUI.renderInterface(canvas, currDisplay);
@@ -156,8 +154,7 @@ public class DuelView extends GameView {
 		renderSys.renderGrid(canvas);
 
 		// render entities
-		renderSys.renderSet(entity, canvas,
-				(ArcanaDeckC) entity.getComponent("HandDeckC"));
+		renderSys.renderSet(entity, canvas, "hand");
 
 		// render user interface
 		gameUI.renderInterface(canvas, currDisplay);
