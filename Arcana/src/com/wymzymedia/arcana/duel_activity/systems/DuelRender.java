@@ -24,12 +24,15 @@ public class DuelRender extends GameSystem {
 
 	// Class variables
 	private final Context context;
-	private final int screenWidth;
-	private final int screenHeight;
 	private final int cardCols;
 	private final int cardRows;
 	private final float cellWidth;
 	private final float cellHeight;
+	private final int textFactor;
+	private final int cardWidth;
+	private final int cardHeight;
+	private final Rect[] gridPosition;
+	private final Rect zoomPosition;
 
 	// Shared helper variables
 	Paint paint = new Paint();
@@ -44,12 +47,33 @@ public class DuelRender extends GameSystem {
 
 		// initialize variables
 		context = c;
-		screenWidth = dispX;
-		screenHeight = dispY;
 		cardCols = cols;
 		cardRows = rows;
 		cellWidth = dispX / cols;
 		cellHeight = dispY / rows;
+
+		// initialize card width and height
+		int widthRatio = 150;
+		int heightRatio = 210;
+		textFactor = 6;
+		int dimenFactor = (cellWidth / widthRatio < cellHeight / heightRatio) ? (int) cellWidth
+				/ widthRatio
+				: (int) cellHeight / heightRatio;
+		cardWidth = widthRatio * dimenFactor;
+		cardHeight = heightRatio * dimenFactor;
+
+		// initialize position rectangles
+		gridPosition = new Rect[cols * rows];
+		for (int i = 0; i < cols * rows; i++) {
+			int startX = (int) (cellWidth / 2 - cardWidth / 2 + (cellWidth * (i % cols)));
+			int startY = (int) (cellHeight / 2 - cardHeight / 2 + (cellHeight * (i / (rows - 1))));
+			int stopX = (int) (cellWidth / 2 + cardWidth / 2 + (cellWidth * (i % cols)));
+			int stopY = (int) (cellHeight / 2 + cardHeight / 2 + (cellHeight * (i / (rows - 1))));
+			gridPosition[i] = new Rect(startX, startY, stopX, stopY);
+		}
+		zoomPosition = new Rect(dispX / 2 - cardWidth * 2, dispY / 2
+				- cardHeight * 2, dispX / 2 + cardWidth * 2, dispY / 2
+				+ cardHeight * 2);
 
 		// set required components
 		addReqComponent("VitalsC");
@@ -81,57 +105,29 @@ public class DuelRender extends GameSystem {
 		int offsetFlag = vitals.isHuman() ? 1 : 0;
 
 		// render player portrait
-		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
+		renderCard(canvas, gridPosition[1 + offsetFlag * 9], -1);
 
 		// render player vitals
-		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
-				* (1 + offsetFlag * 3), Color.GREEN);
-		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
-				* (1 + offsetFlag * 3), Color.BLUE);
+		renderBars(canvas, cellWidth, cellHeight * (1 + offsetFlag * 3),
+				vitals.getLife(), Color.GREEN);
+		renderBars(canvas, cellWidth * 1.85f,
+				cellHeight * (1 + offsetFlag * 3), vitals.getPower(),
+				Color.BLUE);
 
 		// render draw deck
-		renderMiniCard(canvas, 3 + offsetFlag * 3, null, draw.getCards().size());
+		renderCard(canvas, gridPosition[3 + offsetFlag * 3], -1);
+		renderNumber(canvas, gridPosition[3 + offsetFlag * 3], draw.getCards()
+				.size());
 
 		// render play card
 		if (card.getID() >= 0) {
-			renderMiniCard(canvas, 4 + offsetFlag * 3, card, -1);
+			renderCard(canvas, gridPosition[4 + offsetFlag * 3], card.getID());
 		}
 
 		// render discard deck
-		renderMiniCard(canvas, 5 + offsetFlag * 3, null, discard.getCards()
-				.size());
-	}
-
-	// TODO rework logic to allow variable rows/columns layouts
-	// Render active cards view for given player entity
-	public void renderActive(GameEntity entity, Canvas canvas) {
-		// retrieve components
-		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		ArcanaDeckC active = (ArcanaDeckC) entity.getComponent("ActiveDeckC");
-
-		// initialize variables
-		int offsetFlag = vitals.isHuman() ? 1 : 0;
-
-		// render player portrait
-		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
-
-		// render player vitals
-		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
-				* (1 + offsetFlag * 3), Color.GREEN);
-		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
-				* (1 + offsetFlag * 3), Color.BLUE);
-
-		// TODO add card offset to handle more than nine active cards
-		// render set of nine active cards
-		if (vitals.isHuman()) {
-			for (int i = 8; i < active.getCards().size() && i >= 0; i--) {
-				renderMiniCard(canvas, i + 3, active.getCard(i), -1);
-			}
-		} else {
-			for (int i = 0; i < active.getCards().size() && i < 9; i++) {
-				renderMiniCard(canvas, i + 3, active.getCard(i), -1);
-			}
-		}
+		renderCard(canvas, gridPosition[5 + offsetFlag * 3], -1);
+		renderNumber(canvas, gridPosition[5 + offsetFlag * 3], discard
+				.getCards().size());
 	}
 
 	// Render duel background
@@ -141,7 +137,7 @@ public class DuelRender extends GameSystem {
 
 	// TODO rework logic into more general implementation
 	// Render vertically stacking bars at given starting coordinate
-	public void renderBars(Canvas canvas, int bars, float startX, float startY,
+	public void renderBars(Canvas canvas, float startX, float startY, int bars,
 			int color) {
 		float setHeight = cellHeight * 0.1f;
 		float barWidth = cellWidth * 0.15f;
@@ -157,6 +153,52 @@ public class DuelRender extends GameSystem {
 		}
 	}
 
+	// Render card at given position
+	public void renderCard(Canvas canvas, Rect position, int cardID) {
+		// initialize variables
+		ArcanaCardC card = new ArcanaCardC(cardID);
+		Bitmap cardBitmap = null;
+		// TODO retrieve image from resources
+		// cardBitmap = BitmapFactory.decodeResource(
+		// context.getResources(), card.getID());
+
+		// render card
+		if (cardBitmap != null) {
+			// render image
+			// TODO refine bitmap rotation and rendering
+			// Bitmap entityBitmap = BitmapFactory.decodeResource(
+			// context.getResources(), identity.getImageKey());
+			// Bitmap scaledBitmap = Bitmap.createScaledBitmap(entityBitmap,
+			// Math.round(size * 2), Math.round(size * 2), true);
+			// matrix.setRotate(position.getFacing(), size, size);
+			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
+			// canvas.drawBitmap(scaledBitmap, matrix, null);
+		} else {
+			// draw card shape
+			paint.setColor(Color.GRAY);
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			canvas.drawRect(position, paint);
+
+			// draw card name
+			if (cardID >= 0) {
+				// initialize text variables
+				String nameStr = card.getName();
+				int textSize = position.height() / textFactor;
+				paint.setTextSize(textSize);
+				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
+
+				// calculate text coordinate
+				float textX = position.exactCenterX();
+				float textY = position.exactCenterY() + rect.height() / 2;
+
+				// draw name text
+				paint.setTextAlign(Paint.Align.CENTER);
+				paint.setColor(Defaults.TEXT_COLOR);
+				canvas.drawText(nameStr, textX, textY, paint);
+			}
+		}
+	}
+
 	// Render card grid
 	public void renderGrid(Canvas canvas) {
 		// initialize display variables
@@ -165,178 +207,73 @@ public class DuelRender extends GameSystem {
 		// render grid
 		for (int x = 0; x < cardCols; x++) {
 			float[] lineStart = { cellWidth * x, 0 };
-			float[] lineStop = { cellWidth * x, screenHeight - 1 };
+			float[] lineStop = { cellWidth * x, cellHeight * cardRows };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
 		for (int y = 0; y < cardRows; y++) {
 			float[] lineStart = { 0, cellHeight * y };
-			float[] lineStop = { screenWidth - 1, cellHeight * y };
+			float[] lineStop = { cellWidth * cardCols, cellHeight * y };
 			canvas.drawLine(lineStart[0], lineStart[1], lineStop[0],
 					lineStop[1], paint);
 		}
 	}
 
-	// Render hand cards view for given player entity
-	public void renderHand(GameEntity entity, Canvas canvas) {
-		// retrieve components
-		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
-		ArcanaDeckC hand = (ArcanaDeckC) entity.getComponent("HandDeckC");
-
-		// initialize variables
-		int offsetFlag = vitals.isHuman() ? 1 : 0;
-
-		// render player portrait
-		renderMiniCard(canvas, 1 + offsetFlag * 9, null, -1);
-
-		// render player vitals
-		renderBars(canvas, vitals.getLife(), cellWidth, cellHeight
-				* (1 + offsetFlag * 3), Color.GREEN);
-		renderBars(canvas, vitals.getPower(), cellWidth * 1.85f, cellHeight
-				* (1 + offsetFlag * 3), Color.BLUE);
-
-		// TODO add card offset to handle more than nine active cards
-		// render set of nine active cards
-		if (vitals.isHuman()) {
-			for (int i = 0; i < hand.getCards().size() && i < 9; i++) {
-				renderMiniCard(canvas, i, hand.getCard(i), -1);
-			}
-		} else {
-			for (int i = 0; i < hand.getCards().size() && i < 9; i++) {
-				renderMiniCard(canvas, i + 3, hand.getCard(i), -1);
-			}
-		}
-	}
-
-	// TODO rework logic into more general implementation
-	// Render card at given position with optional card count
-	public void renderMiniCard(Canvas canvas, int position, CardC card,
-			int count) {
-		// initialize card coordinate
-		int offsetX = position % 3;
-		int offsetY = position / 3;
-		float posX = cellWidth / 2 + cellWidth * offsetX;
-		float posY = cellHeight / 2 + cellHeight * offsetY;
-
-		// retrieve card image
-		Bitmap cardBitmap = null;
-		// TODO retrieve image from resources
-		// Bitmap cardBitmap = BitmapFactory.decodeResource(
-		// context.getResources(), card.getID());
-
-		// render card
-		int cardWidth = 150;
-		int cardHeight = 210;
-		if (cardBitmap != null) {
-			// render card
-			// TODO refine bitmap rotation and rendering
-			// Bitmap entityBitmap = BitmapFactory.decodeResource(
-			// context.getResources(), identity.getImageKey());
-			// Bitmap scaledBitmap = Bitmap.createScaledBitmap(entityBitmap,
-			// Math.round(size * 2), Math.round(size * 2), true);
-			// matrix.setRotate(position.getFacing(), size, size);
-			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
-			// canvas.drawBitmap(scaledBitmap, matrix, null);
-		} else {
-			// render card shape
-			paint.setColor(Color.GRAY);
-			paint.setStyle(Paint.Style.FILL_AND_STROKE);
-			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
-					+ cardWidth / 2, posY + cardHeight / 2, paint);
-
-			// render card name
-			if (card != null) {
-				// initialize name string
-				String nameStr = card.getName();
-				// TODO calculate text size instead of fixed value
-				int textSize = 50;
-				paint.setTextSize(textSize);
-				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
-
-				// initialize text coordinate
-				paint.setTextAlign(Paint.Align.CENTER);
-				float textX = posX;
-				float textY = posY + rect.height() / 2;
-
-				// render card name
-				paint.setColor(Defaults.TEXT_COLOR);
-				canvas.drawText(nameStr, textX, textY, paint);
-			}
-		}
-
+	// Render number text at given coordinate
+	public void renderNumber(Canvas canvas, Rect position, int count) {
 		// render card count
 		if (count >= 0) {
-			// initialize card count string
+			// initialize text variables
 			String countStr = String.valueOf(count);
-			// TODO calculate text size instead of fixed value
-			int textSize = 35;
+			int textSize = position.height() / textFactor;
 			paint.setTextSize(textSize);
 			paint.getTextBounds(countStr, 0, countStr.length(), rect);
 
-			// initialize card count coordinate
-			paint.setTextAlign(Paint.Align.LEFT);
-			float textX = posX + cellWidth / 2;
-			textX = textX - rect.width() - textSize / 2;
-			float textY = posY + cellHeight / 2;
-			textY = textY - textSize / 2;
+			// calculate text coordinate
+			float textX = position.right - rect.width() - textSize / 2;
+			float textY = position.bottom - textSize / 2;
 
 			// render card count
+			paint.setTextAlign(Paint.Align.LEFT);
 			paint.setColor(Defaults.TEXT_COLOR);
 			canvas.drawText(countStr, textX, textY, paint);
 		}
 	}
 
-	// Render zoom view of single card
-	public void renderZoomCard(int cardID, Canvas canvas) {
+	// TODO rework logic to allow variable rows/columns layouts
+	// Render set view of given cards for given player entity
+	public void renderSet(GameEntity entity, Canvas canvas, ArcanaDeckC deck) {
+		// retrieve components
+		VitalsC vitals = (VitalsC) entity.getComponent("VitalsC");
+
 		// initialize variables
-		ArcanaCardC card = new ArcanaCardC(cardID);
-		int posX = screenWidth / 2;
-		int posY = screenHeight / 2;
+		int offsetFlag = vitals.isHuman() ? 1 : 0;
 
-		// retrieve card image
-		Bitmap cardBitmap = null;
-		// TODO retrieve image from resources
-		// Bitmap cardBitmap = BitmapFactory.decodeResource(
-		// context.getResources(), card.getID());
+		// render player portrait
+		renderCard(canvas, gridPosition[1 + offsetFlag * 9], -1);
 
-		// scale card to screen
-		int cardWidth = 550;
-		int cardHeight = 770;
-		if (cardBitmap != null) {
-			// render card
-			// TODO refine bitmap rotation and rendering
-			// Bitmap entityBitmap = BitmapFactory.decodeResource(
-			// context.getResources(), identity.getImageKey());
-			// Bitmap scaledBitmap = Bitmap.createScaledBitmap(entityBitmap,
-			// Math.round(size * 2), Math.round(size * 2), true);
-			// matrix.setRotate(position.getFacing(), size, size);
-			// matrix.postTranslate(dispCoord[0] - size, dispCoord[1] - size);
-			// canvas.drawBitmap(scaledBitmap, matrix, null);
+		// render player vitals
+		renderBars(canvas, cellWidth, cellHeight * (1 + offsetFlag * 3),
+				vitals.getLife(), Color.GREEN);
+		renderBars(canvas, cellWidth * 1.85f,
+				cellHeight * (1 + offsetFlag * 3), vitals.getPower(),
+				Color.BLUE);
+
+		// TODO add card offset to handle more than nine active cards
+		// render set of nine active cards
+		if (vitals.isHuman()) {
+			for (int i = 0; i < deck.getCards().size() && i < 9; i++) {
+				renderCard(canvas, gridPosition[i], deck.getCard(i).getID());
+			}
 		} else {
-			// render card shape
-			paint.setColor(Color.GRAY);
-			paint.setStyle(Paint.Style.FILL_AND_STROKE);
-			canvas.drawRect(posX - cardWidth / 2, posY - cardHeight / 2, posX
-					+ cardWidth / 2, posY + cardHeight / 2, paint);
-
-			// render card name
-			if (card != null) {
-				// initialize name string
-				String nameStr = card.getName();
-				// TODO calculate text size instead of fixed value
-				int textSize = 50;
-				paint.setTextSize(textSize);
-				paint.getTextBounds(nameStr, 0, nameStr.length(), rect);
-
-				// initialize text coordinate
-				paint.setTextAlign(Paint.Align.CENTER);
-				float textX = posX;
-				float textY = posY + rect.height() / 2;
-
-				// render card name
-				paint.setColor(Defaults.TEXT_COLOR);
-				canvas.drawText(nameStr, textX, textY, paint);
+			for (int i = 0; i < deck.getCards().size() && i < 9; i++) {
+				renderCard(canvas, gridPosition[i + 3], deck.getCard(i).getID());
 			}
 		}
+	}
+
+	// Render zoomed view of single card
+	public void renderZoomCard(int cardID, Canvas canvas) {
+		renderCard(canvas, zoomPosition, cardID);
 	}
 }
