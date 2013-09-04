@@ -29,7 +29,7 @@ public class DuelView extends GameView {
 	private final DuelPlay playSys;
 	private final DuelUpkeep upkeepSys;
 	private final DuelDiscard discardSys;
-	private int zoomCard;
+	private String displayTarget;
 
 	// Constructor
 	public DuelView(Context context) {
@@ -48,7 +48,7 @@ public class DuelView extends GameView {
 		playSys = new DuelPlay(gameState);
 		upkeepSys = new DuelUpkeep(gameState);
 		discardSys = new DuelDiscard(gameState);
-		zoomCard = -1;
+		displayTarget = null;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class DuelView extends GameView {
 			} else if (currDisplay.equals("hand")) {
 				renderHand(canvas, ((DuelState) gameState).getHuman());
 			} else if (currDisplay.equals("card")) {
-				renderCard(canvas, zoomCard);
+				renderCard(canvas, Integer.valueOf(displayTarget));
 			} else {
 				// log unknown display type
 				Log.d(TAG, "Unknown display type: " + currDisplay);
@@ -185,9 +185,9 @@ public class DuelView extends GameView {
 		vitals.setPhase(2);
 	}
 
-	// Set zoom view card id
-	public void setZoomCard(int n) {
-		zoomCard = n;
+	// Set display target
+	public void setDisplayTarget(String s) {
+		displayTarget = s;
 	}
 
 	// Update game

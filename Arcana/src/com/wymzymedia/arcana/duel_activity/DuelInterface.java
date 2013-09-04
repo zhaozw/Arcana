@@ -161,8 +161,7 @@ public class DuelInterface extends GameInterface {
 
 				// set zoomCard if needed
 				if (actionElems[1].equals("card")) {
-					((DuelView) view).setZoomCard(Integer
-							.valueOf(actionElems[2]));
+					((DuelView) view).setDisplayTarget(actionElems[2]);
 				}
 			} else if (actionElems[0].equals("select")) {
 				if (actionElems[1].equals("card")) {
