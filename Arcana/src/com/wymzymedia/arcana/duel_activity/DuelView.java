@@ -82,10 +82,12 @@ public class DuelView extends GameView {
 			// render current display
 			if (currDisplay.equals("main")) {
 				renderMain(canvas);
-			} else if (currDisplay.equals("playerActive")) {
-				renderActive(canvas, ((DuelState) gameState).getHuman());
-			} else if (currDisplay.equals("enemyActive")) {
-				renderActive(canvas, ((DuelState) gameState).getComputer());
+			} else if (currDisplay.equals("active")) {
+				if (displayTarget.equals("human")) {
+					renderActive(canvas, ((DuelState) gameState).getHuman());
+				} else if (displayTarget.equals("computer")) {
+					renderActive(canvas, ((DuelState) gameState).getComputer());
+				}
 			} else if (currDisplay.equals("hand")) {
 				renderHand(canvas, ((DuelState) gameState).getHuman());
 			} else if (currDisplay.equals("card")) {
