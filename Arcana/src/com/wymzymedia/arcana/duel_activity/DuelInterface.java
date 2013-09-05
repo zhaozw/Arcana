@@ -71,9 +71,9 @@ public class DuelInterface extends GameInterface {
 		if (type.equals("main")) {
 			// set interface actions
 			Arrays.fill(cellActionStr, null);
-			cellActionStr[1] = "display:enemyActive";
+			cellActionStr[1] = "display:active:enemy";
 			cellActionStr[9] = "display:hand";
-			cellActionStr[10] = "display:playerActive";
+			cellActionStr[10] = "display:active:player";
 			cellActionStr[11] = "phase:4";
 		} else if (type.equals("enemyActive")) {
 			// retrieve active cards
@@ -152,15 +152,15 @@ public class DuelInterface extends GameInterface {
 	}
 
 	// Execute action string
-	public void executeActionStr(String action) {
-		if (action != null) {
-			String[] actionElems = action.split(":");
+	public void executeActionStr(String actionStr) {
+		if (actionStr != null) {
+			String[] actionElems = actionStr.split(":");
 			if (actionElems[0].equals("display")) {
 				// set display
 				view.setCurrDisplay(actionElems[1]);
 
-				// set zoomCard if needed
-				if (actionElems[1].equals("card")) {
+				// set display target if available
+				if (actionElems[2] != null) {
 					((DuelView) view).setDisplayTarget(actionElems[2]);
 				}
 			} else if (actionElems[0].equals("select")) {
@@ -172,11 +172,11 @@ public class DuelInterface extends GameInterface {
 					// set display to main
 					view.setCurrDisplay("main");
 				}
-			} else if (actionElems[0].equals("phase")) {
+			} else if (actionElems[0].equals("skip")) {
 				// set player phase
 				VitalsC vitals = (VitalsC) ((DuelState) state).getHuman()
 						.getComponent("VitalsC");
-				vitals.setPhase(Integer.valueOf(actionElems[1]));
+				vitals.setPhase(4);
 
 				// set display to main
 				view.setCurrDisplay("main");
