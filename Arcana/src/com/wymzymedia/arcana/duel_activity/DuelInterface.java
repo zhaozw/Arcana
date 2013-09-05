@@ -17,13 +17,11 @@ public class DuelInterface extends GameInterface {
 
 	// Class variables
 	private final GameView view;
-	private final int screenWidth;
-	private final int screenHeight;
-	private final int cardRows;
-	private final int cardCols;
+	private final int gridRows;
+	private final int gridCols;
 	private final float cellWidth;
 	private final float cellHeight;
-	private final String[] cellActionStr;
+	private final String[] actions;
 
 	// Constructor
 	public DuelInterface(GameState s, int dispX, int dispY, int cols, int rows,
@@ -32,28 +30,26 @@ public class DuelInterface extends GameInterface {
 
 		// initialize variables
 		view = v;
-		screenWidth = dispX;
-		screenHeight = dispY;
-		cardCols = cols;
-		cardRows = rows;
+		gridCols = cols;
+		gridRows = rows;
 		cellWidth = dispX / cols;
 		cellHeight = dispY / rows;
-		cellActionStr = new String[cols * rows];
+		actions = new String[cols * rows];
 	}
 
 	// Process touch event
 	@Override
 	public void processTouchEvent(String currDisplay, MotionEvent event) {
-		// TODO remove
-		Log.d(TAG, ">>>>> PROCESSING TOUCH <<<<<");
+		// check for down touch
 		if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-			if (currDisplay.equals("main")) {
-				executeActionStr(getActionStr(event));
-			} else if (currDisplay.equals("enemyActive")) {
-				executeActionStr(getActionStr(event));
-			} else if (currDisplay.equals("playerActive")) {
-				executeActionStr(getActionStr(event));
-			} else if (currDisplay.equals("hand")) {
+			// process interaction based on display type
+			if (currDisplay.equals("main") || currDisplay.equals("active")
+					|| currDisplay.equals("hand")) {
+				// initialize cell actions
+				// TODO probably need to pass display target to initActions()
+				initActions(currDisplay);
+
+				// retrieve and execute action
 				executeActionStr(getActionStr(event));
 			} else if (currDisplay.equals("card")) {
 				// set display to main
@@ -69,86 +65,13 @@ public class DuelInterface extends GameInterface {
 	@Override
 	public void renderInterface(Canvas canvas, String type) {
 		if (type.equals("main")) {
-			// set interface actions
-			Arrays.fill(cellActionStr, null);
-			cellActionStr[1] = "display:active:enemy";
-			cellActionStr[9] = "display:hand";
-			cellActionStr[10] = "display:active:player";
-			cellActionStr[11] = "phase:4";
-		} else if (type.equals("enemyActive")) {
-			// retrieve active cards
-			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state)
-					.getComputer().getComponent("ActiveDeckC");
-
-			// set interface actions
-			Arrays.fill(cellActionStr, null);
-			cellActionStr[1] = "display:main";
-			for (int i = 3; i <= 11; i++) {
-				// retrieve card ID at given position
-				if (i - 3 < active.getCards().size()) {
-					int cardID = active.getCard(i - 3).getID();
-					if (cardID >= 0) {
-						cellActionStr[i] = "display:card:" + cardID;
-					}
-				}
-			}
-		} else if (type.equals("playerActive")) {
-			// retrieve active cards
-			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state).getHuman()
-					.getComponent("ActiveDeckC");
-
-			// set interface actions
-			Arrays.fill(cellActionStr, null);
-			for (int i = 8; i >= 0; i--) {
-				// TODO fix action initialization for player active display
-			}
-			cellActionStr[9] = "display:hand";
-			cellActionStr[10] = "display:main";
-			cellActionStr[11] = "phase:4";
+		} else if (type.equals("active")) {
 		} else if (type.equals("hand")) {
-			// retrieve hand cards
-			ArcanaDeckC hand = (ArcanaDeckC) ((DuelState) state).getHuman()
-					.getComponent("HandDeckC");
-
-			// set interface actions
-			Arrays.fill(cellActionStr, null);
-			for (int i = 0; i <= 8; i++) {
-				// retrieve card ID at given position
-				if (i < hand.getCards().size()) {
-					int cardID = hand.getCard(i).getID();
-					if (cardID >= 0) {
-						cellActionStr[i] = "select:card:" + cardID;
-					}
-				}
-			}
-			cellActionStr[9] = "display:main";
-			cellActionStr[10] = "display:playerActive";
-			cellActionStr[11] = "phase:4";
 		} else if (type.equals("card")) {
-			// set interface actions
-			Arrays.fill(cellActionStr, null);
 		} else {
 			// log unknown interface type
 			Log.d(TAG, "Unknown interface type: " + type);
 		}
-	}
-
-	// Identify and return action string correlating to user touch
-	public String getActionStr(MotionEvent event) {
-		// map touch event to card cell
-		for (int i = 0; i < (cardRows * cardCols); i++) {
-			int gridX = i % cardCols;
-			int gridY = i / cardCols;
-			if (event.getX() >= gridX * cellWidth
-					&& event.getX() <= (gridX + 1) * cellWidth
-					&& event.getY() >= gridY * cellHeight
-					&& event.getY() <= (gridY + 1) * cellHeight) {
-				// return action string for cell
-				return cellActionStr[i];
-			}
-		}
-		// return null if no corresponding cell
-		return null;
 	}
 
 	// Execute action string
@@ -172,11 +95,11 @@ public class DuelInterface extends GameInterface {
 					// set display to main
 					view.setCurrDisplay("main");
 				}
-			} else if (actionElems[0].equals("skip")) {
+			} else if (actionElems[0].equals("phase")) {
 				// set player phase
 				VitalsC vitals = (VitalsC) ((DuelState) state).getHuman()
 						.getComponent("VitalsC");
-				vitals.setPhase(4);
+				vitals.setPhase(Integer.valueOf(actionElems[1]));
 
 				// set display to main
 				view.setCurrDisplay("main");
@@ -184,6 +107,89 @@ public class DuelInterface extends GameInterface {
 				// log unknown action type
 				Log.d(TAG, "Unknown action type: " + actionElems[0]);
 			}
+		}
+	}
+
+	// Identify and return action string for cell matching user touch
+	public String getActionStr(MotionEvent event) {
+		// map touch event to grid cell
+		for (int i = 0; i < (gridRows * gridCols); i++) {
+			int gridX = i % gridCols;
+			int gridY = i / gridCols;
+			if (event.getX() >= gridX * cellWidth
+					&& event.getX() <= (gridX + 1) * cellWidth
+					&& event.getY() >= gridY * cellHeight
+					&& event.getY() <= (gridY + 1) * cellHeight) {
+				// return action string for cell
+				return actions[i];
+			}
+		}
+		// return null if no corresponding cell
+		return null;
+	}
+
+	// Initialize action strings
+	private void initActions(String type) {
+		// clear actions
+		Arrays.fill(actions, null);
+
+		// check interface type
+		if (type.equals("main")) {
+			// set actions
+			actions[1] = "display:active:computer";
+			actions[9] = "display:hand";
+			actions[10] = "display:active:human";
+			actions[11] = "phase:4";
+		} else if (type.equals("enemyActive")) {
+			// retrieve active cards
+			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state)
+					.getComputer().getComponent("ActiveDeckC");
+
+			// set actions
+			actions[1] = "display:main";
+			for (int i = 3; i <= 11; i++) {
+				// retrieve card ID at given position
+				if (i - 3 < active.getCards().size()) {
+					int cardID = active.getCard(i - 3).getID();
+					if (cardID >= 0) {
+						actions[i] = "display:card:" + cardID;
+					}
+				}
+			}
+		} else if (type.equals("playerActive")) {
+			// retrieve active cards
+			ArcanaDeckC active = (ArcanaDeckC) ((DuelState) state).getHuman()
+					.getComponent("ActiveDeckC");
+
+			// set actions
+			for (int i = 8; i >= 0; i--) {
+				// TODO fix action initialization for player active display
+			}
+			actions[9] = "display:hand";
+			actions[10] = "display:main";
+			actions[11] = "skip";
+		} else if (type.equals("hand")) {
+			// retrieve hand cards
+			ArcanaDeckC hand = (ArcanaDeckC) ((DuelState) state).getHuman()
+					.getComponent("HandDeckC");
+
+			// set actions
+			for (int i = 0; i <= 8; i++) {
+				// retrieve card ID at given position
+				if (i < hand.getCards().size()) {
+					int cardID = hand.getCard(i).getID();
+					if (cardID >= 0) {
+						actions[i] = "select:card:" + cardID;
+					}
+				}
+			}
+			actions[9] = "display:main";
+			actions[10] = "display:active:human";
+			actions[11] = "skip";
+		} else if (type.equals("card")) {
+		} else {
+			// log unknown interface type
+			Log.d(TAG, "Unknown interface type: " + type);
 		}
 	}
 }
