@@ -187,6 +187,11 @@ public class DuelView extends GameView {
 		vitals.setPhase(2);
 	}
 
+	// Return display target
+	public String getDisplayTarget() {
+		return displayTarget;
+	}
+
 	// Set display target
 	public void setDisplayTarget(String s) {
 		displayTarget = s;
